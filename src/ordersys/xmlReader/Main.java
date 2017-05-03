@@ -20,6 +20,8 @@ import org.xml.sax.SAXException;
 public class Main {
 
     public static void main(String[] args) {
+        Invoice invoice = new Invoice("voorbeeldorder.xml");
+        System.out.println(invoice);
 //    try {
 //        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 //        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();

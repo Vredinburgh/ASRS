@@ -9,14 +9,15 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by ian on 02/05/2017.
  */
 public class ProcessOrder {
 
-    private String orderNr, date, firstName, lastName, address, zipCode, city;
-    private int[] producten;
+    private ArrayList<String> details = new ArrayList<>();
+    private int[] products;
 
     public ProcessOrder(String pathname) {
         try {
@@ -24,30 +25,19 @@ public class ProcessOrder {
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
             Document doc = docBuilder.parse (new File(pathname));
 
-            orderNr = doc.getElementsByTagName("ordernummer").item(0).getTextContent();
-            date = doc.getElementsByTagName("datum").item(0).getTextContent();
+            details.add(doc.getElementsByTagName("ordernummer").item(0).getTextContent());  //orderNr
+            details.add(doc.getElementsByTagName("datum").item(0).getTextContent());        //date
 
-            firstName = doc.getElementsByTagName("voornaam").item(0).getTextContent();
-            lastName = doc.getElementsByTagName("achternaam").item(0).getTextContent();
-            address = doc.getElementsByTagName("adres").item(0).getTextContent();
-            zipCode = doc.getElementsByTagName("postcode").item(0).getTextContent();
-            city = doc.getElementsByTagName("plaats").item(0).getTextContent();
+            details.add(doc.getElementsByTagName("voornaam").item(0).getTextContent());     //firstName
+            details.add(doc.getElementsByTagName("achternaam").item(0).getTextContent());   //lastName
+            details.add(doc.getElementsByTagName("adres").item(0).getTextContent());        //address
+            details.add(doc.getElementsByTagName("postcode").item(0).getTextContent());     //zipCode
+            details.add(doc.getElementsByTagName("plaats").item(0).getTextContent());       //city
 
             NodeList listOfProducts = doc.getElementsByTagName("artikelnr");
-            int totalProducts = listOfProducts.getLength();
-
+            products = new int[listOfProducts.getLength()];
             for(int s=0; s<listOfProducts.getLength() ; s++) {
-                producten[s] = Integer.parseInt(listOfProducts.item(s).getTextContent());
-            }
-
-            System.out.println("Bestelling #" + orderNr + " - datum:" + date + "\n");
-            System.out.println("Op naam van:\n" + firstName + " " + lastName + "\n");
-            System.out.println(address + "\n" + zipCode + " " + city + "\n\n");
-            System.out.println(totalProducts + " besteld: \n");
-            for(int s=0; s<listOfProducts.getLength() ; s++) {
-
-                String product = listOfProducts.item(s).getTextContent();
-                System.out.println(product);
+                products[s] = Integer.parseInt(listOfProducts.item(s).getTextContent());
             }
         } catch (SAXException e) {
             e.printStackTrace();
@@ -58,4 +48,11 @@ public class ProcessOrder {
         }
     }
 
+    public ArrayList<String> getDetails() {
+        return details;
+    }
+
+    public int[] getProducts() {
+        return products;
+    }
 }
