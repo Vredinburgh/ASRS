@@ -12,7 +12,7 @@ public class Order {
     public Order(int[] productNrs) {
 
             for(int i = 0; i < productNrs.length; i++) {
-                products.add(new Product(i));
+                products.add(new Product(productNrs[i]));
             }
     }
 

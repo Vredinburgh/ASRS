@@ -39,12 +39,18 @@ public class ProcessOrder {
             for(int s=0; s<listOfProducts.getLength() ; s++) {
                 products[s] = Integer.parseInt(listOfProducts.item(s).getTextContent());
             }
-        } catch (SAXException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+            System.out.println(e);
+            //e.printStackTrace();
+        }catch (NullPointerException e) {
+            System.out.println(e);
+            //e.printStackTrace();
+        } catch (SAXException e) {
+            System.out.println(e);
+            //e.printStackTrace();
+        }  catch (ParserConfigurationException e) {
+            System.out.println(e);
+            //e.printStackTrace();
         }
     }
 

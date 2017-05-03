@@ -28,7 +28,6 @@ public class Invoice {
         return "Invoice{" +
                 "customer=" + customer +
                 ", order=" + order +
-                ", processOrder=" + processOrder +
                 '}';
     }
 }
