@@ -20,42 +20,44 @@ import org.xml.sax.SAXException;
 public class Main {
 
     public static void main(String[] args) {
-    try {
-        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-        Document doc = docBuilder.parse (new File("voorbeeldorder.xml"));
-
-        String orderNr = doc.getElementsByTagName("ordernummer").item(0).getTextContent();
-        String date = doc.getElementsByTagName("datum").item(0).getTextContent();
-
-        String firstName = doc.getElementsByTagName("voornaam").item(0).getTextContent();
-        String lastName = doc.getElementsByTagName("achternaam").item(0).getTextContent();
-        String address = doc.getElementsByTagName("adres").item(0).getTextContent();
-        String zipCode = doc.getElementsByTagName("postcode").item(0).getTextContent();
-        String city = doc.getElementsByTagName("plaats").item(0).getTextContent();
-
-        NodeList listOfProducts = doc.getElementsByTagName("artikelnr");
-        int totalProducts = listOfProducts.getLength();
-
-        System.out.println("Bestelling #" + orderNr + " - datum:" + date + "\n");
-        System.out.println("Op naam van:\n" + firstName + " " + lastName + "\n");
-        System.out.println(address + "\n" + zipCode + " " + city + "\n\n");
-        System.out.println(totalProducts + " besteld: \n");
-        for(int s=0; s<listOfProducts.getLength() ; s++) {
-
-            String product = listOfProducts.item(s).getTextContent();
-            System.out.println(product);
-        }
-    } catch (FileNotFoundException e) {
-        e.printStackTrace();
-    } catch (ParserConfigurationException e) {
-        e.printStackTrace();
-    } catch (IOException e) {
-        e.printStackTrace();
-    } catch (SAXException e) {
-        e.printStackTrace();
-    } catch (NullPointerException e) {
-        e.printStackTrace();
-    }
+//    try {
+//        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+//        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+//        Document doc = docBuilder.parse (new File("voorbeeldorder.xml"));
+//
+//        String orderNr = doc.getElementsByTagName("ordernummer").item(0).getTextContent();
+//        String date = doc.getElementsByTagName("datum").item(0).getTextContent();
+//
+//        String firstName = doc.getElementsByTagName("voornaam").item(0).getTextContent();
+//        String lastName = doc.getElementsByTagName("achternaam").item(0).getTextContent();
+//        String address = doc.getElementsByTagName("adres").item(0).getTextContent();
+//        String zipCode = doc.getElementsByTagName("postcode").item(0).getTextContent();
+//        String city = doc.getElementsByTagName("plaats").item(0).getTextContent();
+//
+//        NodeList listOfProducts = doc.getElementsByTagName("artikelnr");
+//        int totalProducts = listOfProducts.getLength();
+//
+//        System.out.println("Bestelling #" + orderNr + " - datum:" + date + "\n");
+//        System.out.println("Op naam van:\n" + firstName + " " + lastName + "\n");
+//        System.out.println(address + "\n" + zipCode + " " + city + "\n\n");
+//        System.out.println(totalProducts + " besteld: \n");
+//        for(int s=0; s<listOfProducts.getLength() ; s++) {
+//
+//            String product = listOfProducts.item(s).getTextContent();
+//            System.out.println(product);
+//        }
+//    } catch (FileNotFoundException e) {
+//        e.printStackTrace();
+//    } catch (ParserConfigurationException e) {
+//        e.printStackTrace();
+//    } catch (IOException e) {
+//        e.printStackTrace();
+//    } catch (SAXException e) {
+//        e.printStackTrace();
+//    } catch (NullPointerException e) {
+//        e.printStackTrace();
+//    } catch (Exception e) {
+//        e.printStackTrace();
+//    }
     }
 }
