@@ -6,36 +6,6 @@ package ordersys.com;
 public class Sorter extends Robot {
 
     public Sorter() {
-
-    }
-
-    @Override
-    public void openConnection() {
-
-    }
-
-    @Override
-    public void command(String input) {
-
-    }
-
-    @Override
-    public void start(int[] route) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public String getStatus() {
-        return null;
-    }
-
-    @Override
-    public void closeConnection() {
-
+        super("cu.usbmodem1411");
     }
 }
