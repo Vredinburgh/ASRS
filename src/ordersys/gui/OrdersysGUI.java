@@ -9,14 +9,14 @@ import ordersys.Controller;
 /**
  * Created by ian on 02/05/2017.
  */
-public class OrdersysGUI extends JFrame implements ActionListener {
+public class OrdersysGUI extends JFrame {
 
     private LeftGuiPanel leftPanel;
     private RightGuiPanel rightPanel;
     
     private Controller controller;
     
-    public OrdersysGUI() throws HeadlessException {
+    public OrdersysGUI() {
         controller = new Controller();
         
         leftPanel = new LeftGuiPanel(controller);
@@ -32,10 +32,5 @@ public class OrdersysGUI extends JFrame implements ActionListener {
         add(rightPanel);
         
         setVisible(true);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
     }
 }

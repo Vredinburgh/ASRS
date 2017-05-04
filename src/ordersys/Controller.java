@@ -25,7 +25,7 @@ public class Controller {
         //Initiate invoice
         invoice = new Invoice(invoicePath);
         
-        //Update customer information
+        //Update the customer section
         customerSection.updateInformation(invoice);
     }
     
