@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import ordersys.Controller;
 
 /**
  *
@@ -21,11 +22,15 @@ public class StartExecuteSection extends JPanel implements ActionListener {
 
     private JButton startButton;
     
-    public StartExecuteSection() {
+    private Controller controller;
+    
+    public StartExecuteSection(Controller controller) {
         setPreferredSize(new Dimension(500, 175));
 
         setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), "Start uitvoeren"));
 
+        this.controller = controller;
+        
         startButton = new JButton("Start uitvoeren");
         startButton.setPreferredSize(new Dimension(450, 135));
         startButton.addActionListener(this);

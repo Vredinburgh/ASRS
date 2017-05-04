@@ -9,8 +9,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import ordersys.Controller;
 
 /**
  *
@@ -18,11 +18,15 @@ import javax.swing.JPanel;
  */
 public class StatusOrderwrapSection extends JPanel {
 
-    public StatusOrderwrapSection() {
+    private Controller controller;
+    
+    public StatusOrderwrapSection(Controller controller) {
         setPreferredSize(new Dimension(395, 405));
 
         setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), "Status inpakrobot"));
 
+        this.controller = controller;
+        
         setVisible(true);
     }
 

@@ -7,18 +7,30 @@ package ordersys.gui;
 
 import java.awt.Dimension;
 import javax.swing.JPanel;
+import ordersys.Controller;
 
 /**
  *
  * @author gerri
  */
 public class LeftGuiPanel extends JPanel {
-    public LeftGuiPanel() {
+    
+    private OrderReadSection orderReadSection;
+    private StartExecuteSection startExecuteSection;
+    private CustomerSection customerSection;
+    
+    public LeftGuiPanel(Controller controller) {
         setPreferredSize(new Dimension(500, 600));
         
-        add(new OrderReadSection());
-        add(new StartExecuteSection());
-        add(new CustomerSection());
+        orderReadSection = new OrderReadSection(controller);
+        startExecuteSection = new StartExecuteSection(controller);
+        customerSection = new CustomerSection(controller);
+        
+        controller.setCustomerSection(customerSection);
+        
+        add(orderReadSection);
+        add(startExecuteSection);
+        add(customerSection);
         
         setVisible(true);
     }

@@ -7,6 +7,7 @@ package ordersys.gui;
 
 import java.awt.Dimension;
 import javax.swing.JPanel;
+import ordersys.Controller;
 
 /**
  *
@@ -14,12 +15,20 @@ import javax.swing.JPanel;
  */
 public class RightGuiPanel extends JPanel {
 
-    public RightGuiPanel() {
+    private OrderInformationSection orderInformationSection;
+    private StatusOrderpickSection statusOrderpickSection;
+    private StatusOrderwrapSection statusOrderwrapSection;
+    
+    public RightGuiPanel(Controller controller) {
         setPreferredSize(new Dimension(800, 600));
-
-        add(new OrderInformationSection());
-        add(new StatusOrderpickSection());
-        add(new StatusOrderwrapSection());
+        
+        orderInformationSection = new OrderInformationSection(controller);
+        statusOrderpickSection = new StatusOrderpickSection(controller);
+        statusOrderwrapSection = new StatusOrderwrapSection(controller);
+        
+        add(orderInformationSection);
+        add(statusOrderpickSection);
+        add(statusOrderwrapSection);
 
         setVisible(true);
     }

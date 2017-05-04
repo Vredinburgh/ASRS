@@ -10,16 +10,22 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import ordersys.Controller;
 
 /**
  *
  * @author gerri
  */
 public class StatusOrderpickSection extends JPanel {
-    public StatusOrderpickSection() {
+    
+    private Controller controller;
+    
+    public StatusOrderpickSection(Controller controller) {
         setPreferredSize(new Dimension(395, 405));
         
         setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), "Status ophaalrobot"));
+        
+        this.controller = controller;
         
         setVisible(true);
     }

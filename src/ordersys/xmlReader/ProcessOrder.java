@@ -23,7 +23,7 @@ public class ProcessOrder {
         try {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-            Document doc = docBuilder.parse (new File(pathname));
+            Document doc = docBuilder.parse(new File(pathname));
 
             details.add(doc.getElementsByTagName("ordernummer").item(0).getTextContent());  //orderNr
             details.add(doc.getElementsByTagName("datum").item(0).getTextContent());        //date
@@ -36,19 +36,19 @@ public class ProcessOrder {
 
             NodeList listOfProducts = doc.getElementsByTagName("artikelnr");
             products = new int[listOfProducts.getLength()];
-            for(int s=0; s<listOfProducts.getLength() ; s++) {
+            for (int s = 0; s < listOfProducts.getLength(); s++) {
                 products[s] = Integer.parseInt(listOfProducts.item(s).getTextContent());
             }
         } catch (IOException e) {
             System.out.println(e);
             //e.printStackTrace();
-        }catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             System.out.println(e);
             //e.printStackTrace();
         } catch (SAXException e) {
             System.out.println(e);
             //e.printStackTrace();
-        }  catch (ParserConfigurationException e) {
+        } catch (ParserConfigurationException e) {
             System.out.println(e);
             //e.printStackTrace();
         }

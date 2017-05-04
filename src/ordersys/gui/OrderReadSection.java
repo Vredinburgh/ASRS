@@ -11,7 +11,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import ordersys.Controller;
 
 /**
  *
@@ -21,10 +24,14 @@ public class OrderReadSection extends JPanel implements ActionListener {
     
     private JButton readButton;
     
-    public OrderReadSection() {
+    private Controller controller;
+    
+    public OrderReadSection(Controller controller) {
         setPreferredSize(new Dimension(500, 175));
         
         setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), "Order inlezen"));
+        
+        this.controller = controller;
         
         readButton = new JButton("Selecteer XML bestand");
         readButton.setPreferredSize(new Dimension(450, 135));
@@ -38,7 +45,13 @@ public class OrderReadSection extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == readButton) {
-            System.out.println("XML bestand ingelezen :D");
+            JFileChooser chooser = new JFileChooser();
+            chooser.setFileFilter(new FileNameExtensionFilter("Alleen XML", "xml"));
+            
+            int returnValue = chooser.showOpenDialog(null);
+            if(returnValue == JFileChooser.APPROVE_OPTION) {
+                controller.setInvoiceData(chooser.getSelectedFile().getAbsolutePath());
+            }
         }
     }
 }

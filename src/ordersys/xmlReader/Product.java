@@ -6,6 +6,7 @@ import java.sql.*;
  * Created by ian on 03/05/2017.
  */
 public class Product {
+
     private String name;
     private int productNr, height, stock, x, y;
 
@@ -13,17 +14,17 @@ public class Product {
 
         this.productNr = productNr;
 
-        String query =  "SELECT * FROM object o WHERE object_id = " + productNr +
-                        " JOIN location l ON o.object_id = l.object_id;";
+        String query = "SELECT * FROM object o WHERE object_id = " + productNr
+                + " JOIN location l ON o.object_id = l.object_id;";
         // hier in de database zoeken naar bijbehorende gegevens
-        try{
+        try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con=DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/sonoo","root","root");
+            Connection con = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/sonoo", "root", "root");
             //here sonoo is database name, root is username and password
-            Statement stmt=con.createStatement();
-            ResultSet rs=stmt.executeQuery(query);
-            while(rs.next()) {
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
                 name = rs.getString("name");
                 height = Integer.parseInt(rs.getString("height"));
                 stock = Integer.parseInt(rs.getString("stock"));
@@ -31,8 +32,9 @@ public class Product {
                 y = Integer.parseInt(rs.getString("y"));
             }
             con.close();
-        }catch(Exception e){ System.out.println(e);}
-
+        } catch (Exception e) {
+            System.out.println(e);
+        }
 
     }
 
@@ -62,13 +64,13 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" +
-                "name='" + name + '\'' +
-                ", productNr=" + productNr +
-                ", height=" + height +
-                ", stock=" + stock +
-                ", x=" + x +
-                ", y=" + y +
-                '}';
+        return "Product{"
+                + "name='" + name + '\''
+                + ", productNr=" + productNr
+                + ", height=" + height
+                + ", stock=" + stock
+                + ", x=" + x
+                + ", y=" + y
+                + '}';
     }
 }

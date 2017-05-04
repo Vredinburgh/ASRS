@@ -11,7 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.AbstractTableModel;
+import ordersys.Controller;
 
 /**
  *
@@ -20,12 +20,16 @@ import javax.swing.table.AbstractTableModel;
 public class OrderInformationSection extends JPanel {
 
     private JTable tableOrders;
+    
+    private Controller controller;
 
-    public OrderInformationSection() {
+    public OrderInformationSection(Controller controller) {
         setPreferredSize(new Dimension(800, 175));
 
         setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), "Order informatie"));
 
+        this.controller = controller;
+        
         //Column names
         String[] columns = new String[]{
             "Product id", "Naam", "Prijs", "Grootte"

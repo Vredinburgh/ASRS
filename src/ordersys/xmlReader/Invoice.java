@@ -12,7 +12,7 @@ public class Invoice {
     public Invoice(String pathname) {
         processOrder = new ProcessOrder(pathname);
         this.customer = new Customer(processOrder.getDetails());
-        this.order = new Order(processOrder.getProducts());
+        //this.order = new Order(processOrder.getProducts());
     }
 
     public Customer getCustomer() {
@@ -25,9 +25,9 @@ public class Invoice {
 
     @Override
     public String toString() {
-        return "Invoice{" +
-                "customer=" + customer +
-                ", order=" + order +
-                '}';
+        return "Invoice{"
+                + "customer=" + customer
+                + ", order=" + order
+                + '}';
     }
 }
