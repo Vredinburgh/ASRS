@@ -70,6 +70,7 @@ public class OrderInformationSection extends JPanel {
     public void updateOrderDetails() {
         products = controller.getInvoiceData().getOrder().getProducts();
 
+        //Add a row to the table for each product
         for(Product p : products) {
             tableModel.addRow(new Object[]{p.getProductNr(), p.getName(), p.getPrice(), p.getHeight(), p.getX(), p.getY()});
         }

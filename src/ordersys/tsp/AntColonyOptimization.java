@@ -1,12 +1,10 @@
-package tsp.antcolony;
+package ordersys.tsp;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.Random;
 import java.util.stream.IntStream;
-import tsp.simulator.Helper;
 
 public class AntColonyOptimization {
 

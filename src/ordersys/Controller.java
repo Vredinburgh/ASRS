@@ -7,6 +7,8 @@ package ordersys;
 
 import ordersys.gui.CustomerSection;
 import ordersys.gui.OrderInformationSection;
+import ordersys.gui.StatusOrderpickSection;
+import ordersys.gui.StatusOrderwrapSection;
 import ordersys.xmlReader.Invoice;
 
 /**
@@ -17,8 +19,13 @@ public class Controller {
 
     private CustomerSection customerSection;
     private OrderInformationSection orderSection;
+    private StatusOrderpickSection tspSection;
+    private StatusOrderwrapSection bppSection;
 
     private Invoice invoice;
+
+    public boolean startTsp;
+    public boolean startBpp;
 
     public Controller() {
 
@@ -37,6 +44,14 @@ public class Controller {
 
         //Update the order section
         orderSection.updateOrderDetails();
+
+        //Give signal to start the TSP and BPP
+        startTsp = true;
+        startBpp = true;
+
+        //Repaint the TSP and BPP panel
+        tspSection.repaint();
+        bppSection.repaint();
     }
 
     public void setCustomerSection(CustomerSection customerSection) {
@@ -45,5 +60,13 @@ public class Controller {
 
     public void setOrderSection(OrderInformationSection orderSection) {
         this.orderSection = orderSection;
+    }
+
+    public void setTspSection(StatusOrderpickSection tspSection) {
+        this.tspSection = tspSection;
+    }
+
+    public void setBppSection(StatusOrderwrapSection bppSection) {
+        this.bppSection = bppSection;
     }
 }

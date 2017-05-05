@@ -1,4 +1,4 @@
-package tsp.antcolony;
+package ordersys.tsp;
 
 public class Ant {
 
