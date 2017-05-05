@@ -7,11 +7,14 @@ package ordersys.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import ordersys.Controller;
+import ordersys.xmlReader.Product;
 
 /**
  *
@@ -20,8 +23,11 @@ import ordersys.Controller;
 public class OrderInformationSection extends JPanel {
 
     private JTable tableOrders;
-    
+    private DefaultTableModel tableModel;
+
     private Controller controller;
+    private ArrayList<Product> products;
+    private Object[][] data;
 
     public OrderInformationSection(Controller controller) {
         setPreferredSize(new Dimension(800, 175));
@@ -30,23 +36,22 @@ public class OrderInformationSection extends JPanel {
 
         this.controller = controller;
         
-        //Column names
-        String[] columns = new String[]{
-            "Product id", "Naam", "Prijs", "Grootte"
-        };
-
-        //actual data for the table in a 2d array
-        Object[][] data = new Object[][]{
-            {1, "Peer", 1.35, 12.0},
-            {2, "Ananas", 3.25, 30.0},
-            {3, "Mandarijn", 0.75, 5.0}
-        };
+        //Set table model
+        tableModel = new DefaultTableModel();
         
+        //Set column names
+        tableModel.addColumn("Product id");
+        tableModel.addColumn("Naam");
+        tableModel.addColumn("Prijs");
+        tableModel.addColumn("Grootte");
+        tableModel.addColumn("X");
+        tableModel.addColumn("Y");
+
         //create table with data
-        JTable tableOrders = new JTable(data, columns);
+        tableOrders = new JTable(tableModel);
         tableOrders.setFocusable(false);
         tableOrders.setRowSelectionAllowed(false);
-                
+
         //Create a frame holder
         JScrollPane tableHolder = new JScrollPane(tableOrders);
         tableHolder.setPreferredSize(new Dimension(750, 140));
@@ -55,5 +60,13 @@ public class OrderInformationSection extends JPanel {
         add(tableHolder);
 
         setVisible(true);
+    }
+
+    public void updateOrderDetails() {
+        products = controller.getInvoiceData().getOrder().getProducts();
+
+        for(Product p : products) {
+            tableModel.addRow(new Object[]{p.getProductNr(), p.getName(), p.getPrice(), p.getHeight(), p.getX(), p.getY()});
+        }
     }
 }

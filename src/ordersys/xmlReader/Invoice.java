@@ -8,11 +8,11 @@ public class Invoice {
     private Customer customer;
     private Order order;
     private ProcessOrder processOrder;
-
+    
     public Invoice(String pathname) {
         processOrder = new ProcessOrder(pathname);
         this.customer = new Customer(processOrder.getDetails());
-        //this.order = new Order(processOrder.getProducts());
+        this.order = new Order(processOrder.getProducts());
     }
 
     public Customer getCustomer() {

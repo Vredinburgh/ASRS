@@ -9,25 +9,27 @@ public class Product {
 
     private String name;
     private int productNr, height, stock, x, y;
+    private double price;
 
     public Product(int productNr) {
 
         this.productNr = productNr;
 
-        String query = "SELECT * FROM object o WHERE object_id = " + productNr
-                + " JOIN location l ON o.object_id = l.object_id;";
+        String query = "SELECT * from product where id="+productNr;
         // hier in de database zoeken naar bijbehorende gegevens
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/sonoo", "root", "root");
+                    "jdbc:mysql://jansengames.com:3306/jansen1q_robot", "jansen1q_robot", "robot123");
             //here sonoo is database name, root is username and password
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 name = rs.getString("name");
+                name = rs.getString("name");
                 height = Integer.parseInt(rs.getString("height"));
                 stock = Integer.parseInt(rs.getString("stock"));
+                price = Double.parseDouble(rs.getString("price"));
                 x = Integer.parseInt(rs.getString("x"));
                 y = Integer.parseInt(rs.getString("y"));
             }
@@ -52,6 +54,10 @@ public class Product {
 
     public int getStock() {
         return stock;
+    }
+    
+    public double getPrice() {
+        return price;
     }
 
     public int getX() {

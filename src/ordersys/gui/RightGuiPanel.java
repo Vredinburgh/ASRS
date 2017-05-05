@@ -26,6 +26,8 @@ public class RightGuiPanel extends JPanel {
         statusOrderpickSection = new StatusOrderpickSection(controller);
         statusOrderwrapSection = new StatusOrderwrapSection(controller);
         
+        controller.setOrderSection(orderInformationSection);
+        
         add(orderInformationSection);
         add(statusOrderpickSection);
         add(statusOrderwrapSection);
