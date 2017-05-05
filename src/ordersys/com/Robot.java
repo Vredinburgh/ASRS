@@ -6,6 +6,8 @@ import java.util.Scanner;
 
 /**
  * Created by ian on 04/05/2017.
+ *
+ * https://sourceforge.net/projects/javaarduinolibrary/files/
  */
 public class Robot {
 
@@ -13,13 +15,13 @@ public class Robot {
     Arduino arduino;
 
     public Robot(String portDescription) {
-        ob = new Scanner(System.in);
         arduino = new Arduino(portDescription, 9600);
     }
 
     public void openConnection() {
+        ob = new Scanner(System.in);
         arduino.openConnection();
-        System.out.println("test");
+        System.out.println("new connection");
 
 //        while(input != "n"){
 //            if(input == "pause") {
@@ -46,16 +48,29 @@ public class Robot {
         command(ob.nextLine());
     }
 
+    public void testCommand() {
+        openConnection();
+        String input = ob.nextLine();
+        while(input != "n") {
+            arduino.serialWrite(input);
+            input = ob.nextLine();
+            System.out.println("command");
+        }
+        closeConnection();
+    }
+
     public void start(int[] route) {
         openConnection();
         //geef route aan arduino
     }
 
     public String getState() {
-        openConnection();
-        arduino.serialWrite("state");
-        String state = "iets";
-        closeConnection();
+        arduino.openConnection();
+        System.out.println("test");
+        arduino.serialWrite("state", 5, 0);
+        String state = arduino.serialRead(0);
+        System.out.println("Statekk: " + state + " k");
+        arduino.closeConnection();
         return state;
     }
 }

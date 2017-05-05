@@ -9,16 +9,17 @@ void setup() {
 void loop() {
   if(Serial.available()> 0){ //if data has been written to the Serial stream
     data = Serial.readString();
-
+    Serial.println("test");
     if(data == "1") {
       digitalWrite(12,HIGH);
+      Serial.println("ON");
     } else if(data == "0") {
       digitalWrite(12,LOW);
     } else if(data == "start") {
       startTask();
     } else if(data == "stop") {
       stopTask();
-    } else if(data == "status") {
+    } else if(data == "state") {
       getState();
     }
   }
@@ -34,6 +35,7 @@ void stopTask() {
 
 void getState() {
   Serial.println(currentState);
+  delay(500);
 }
 
 

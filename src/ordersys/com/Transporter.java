@@ -6,7 +6,7 @@ package ordersys.com;
 public class Transporter extends Robot {
 
     public Transporter() {
-        super("cu.usbmodem1411");
+        super("/dev/cu.usbmodem1411");
     }
 }
 
