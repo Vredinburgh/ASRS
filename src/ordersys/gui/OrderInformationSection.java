@@ -36,8 +36,13 @@ public class OrderInformationSection extends JPanel {
 
         this.controller = controller;
         
-        //Set table model
-        tableModel = new DefaultTableModel();
+        //Set table model and set editable to false
+        tableModel = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         
         //Set column names
         tableModel.addColumn("Product id");
