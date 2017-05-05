@@ -34,7 +34,7 @@ public class StatusOrderwrapSection extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if (controller.startBpp) {
+        //if (controller.startBpp) {
             g.drawString("Doos 1", 30, 50);
             g.drawString("Doos 2", 205, 50);
 
@@ -46,6 +46,6 @@ public class StatusOrderwrapSection extends JPanel {
 
             g.setColor(Color.red);
             g.fillRect(205, 60, 158, 310);
-        }
+        //}
     }
 }

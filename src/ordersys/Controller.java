@@ -23,9 +23,7 @@ public class Controller {
     private StatusOrderwrapSection bppSection;
 
     private Invoice invoice;
-
-    public boolean startTsp;
-    public boolean startBpp;
+    private TSPHandler tsp;
 
     public Controller() {
 
@@ -46,12 +44,9 @@ public class Controller {
         orderSection.updateOrderDetails();
 
         //Give signal to start the TSP and BPP
-        startTsp = true;
-        startBpp = true;
-
-        //Repaint the TSP and BPP panel
-        tspSection.repaint();
-        bppSection.repaint();
+        tsp = new TSPHandler(tspSection, invoice.getOrder().getProducts());
+        tspSection.setTspHandler(tsp);
+        tsp.startTsp();
     }
 
     public void setCustomerSection(CustomerSection customerSection) {

@@ -11,6 +11,7 @@ import java.awt.Graphics;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import ordersys.Controller;
+import ordersys.TSPHandler;
 
 /**
  *
@@ -19,6 +20,7 @@ import ordersys.Controller;
 public class StatusOrderpickSection extends JPanel {
 
     private Controller controller;
+    private TSPHandler tsp;
 
     public StatusOrderpickSection(Controller controller) {
         setPreferredSize(new Dimension(395, 405));
@@ -26,15 +28,19 @@ public class StatusOrderpickSection extends JPanel {
         setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), "Status ophaalrobot"));
 
         this.controller = controller;
-
+        
         setVisible(true);
+    }
+
+    public void setTspHandler(TSPHandler tsp) {
+        this.tsp = tsp;
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if (controller.startTsp) {
+        if (tsp != null && tsp.startTsp) {
             g.setColor(Color.green);
             g.fillRect(315, 325, 50, 50);
             g.setColor(Color.red);
