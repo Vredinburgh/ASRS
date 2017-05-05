@@ -10,6 +10,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import ordersys.BPPHandler;
 import ordersys.Controller;
 
 /**
@@ -19,6 +20,7 @@ import ordersys.Controller;
 public class StatusOrderwrapSection extends JPanel {
 
     private Controller controller;
+    private BPPHandler bpp;
 
     public StatusOrderwrapSection(Controller controller) {
         setPreferredSize(new Dimension(395, 405));
@@ -30,22 +32,20 @@ public class StatusOrderwrapSection extends JPanel {
         setVisible(true);
     }
 
+    public void setBppHandler(BPPHandler bpp) {
+        this.bpp = bpp;
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        //if (controller.startBpp) {
+        if (bpp != null && bpp.startBpp) {
             g.drawString("Doos 1", 30, 50);
             g.drawString("Doos 2", 205, 50);
 
             g.drawRect(30, 60, 158, 310);
             g.drawRect(205, 60, 158, 310);
-
-            g.setColor(Color.green);
-            g.fillRect(30, 60 + 155, 158, 155);
-
-            g.setColor(Color.red);
-            g.fillRect(205, 60, 158, 310);
-        //}
+        }
     }
 }

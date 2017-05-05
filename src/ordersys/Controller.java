@@ -24,6 +24,7 @@ public class Controller {
 
     private Invoice invoice;
     private TSPHandler tsp;
+    private BPPHandler bpp;
 
     public Controller() {
 
@@ -47,6 +48,11 @@ public class Controller {
         tsp = new TSPHandler(tspSection, invoice.getOrder().getProducts());
         tspSection.setTspHandler(tsp);
         tsp.startTsp();
+
+        //Give signal to start the TSP and BPP
+        bpp = new BPPHandler(bppSection);
+        bppSection.setBppHandler(bpp);
+        bpp.startBpp();
     }
 
     public void setCustomerSection(CustomerSection customerSection) {
