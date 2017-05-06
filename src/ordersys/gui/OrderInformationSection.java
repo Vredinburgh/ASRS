@@ -27,7 +27,6 @@ public class OrderInformationSection extends JPanel {
 
     private Controller controller;
     private ArrayList<Product> products;
-    private Object[][] data;
 
     public OrderInformationSection(Controller controller) {
         setPreferredSize(new Dimension(800, 175));
@@ -68,6 +67,10 @@ public class OrderInformationSection extends JPanel {
     }
 
     public void updateOrderDetails() {
+        //First clear the table
+        tableModel.setRowCount(0);
+        
+        //Bind the product arraylist
         products = controller.getInvoiceData().getOrder().getProducts();
 
         //Add a row to the table for each product
