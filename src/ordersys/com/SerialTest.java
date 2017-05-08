@@ -15,15 +15,15 @@ public class SerialTest {
         Transporter transporter = null;
         try {
             transporter = new Transporter();
-            //transporter.testCommand();
+            transporter.testCommand();
         } catch (SerialPortException e) {
             e.printStackTrace();
         }
-        try {
-            System.out.println("Current state: " + transporter.getState());
-        } catch(NullPointerException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            System.out.println("Current state: " + transporter.getState());
+//        } catch(NullPointerException e) {
+//            e.printStackTrace();
+//        }
 
 //        System.out.println("testMain");
 
