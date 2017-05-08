@@ -1,46 +1,58 @@
 package ordersys.com;
 
-import arduino.Arduino;
+import jssc.*;
 
 import java.util.Scanner;
+
 
 /**
  * Created by ian on 04/05/2017.
  *
- * https://sourceforge.net/projects/javaarduinolibrary/files/
+ * https://code.google.com/archive/p/java-simple-serial-connector/
  */
-public class Robot {
+public class Robot implements SerialPortEventListener {
 
     Scanner ob;
-    Arduino arduino;
+    SerialPort serialPort;
 
-    public Robot(String portDescription) {
-        arduino = new Arduino(portDescription, 9600);
+    public Robot(String portDescription) throws SerialPortException {
+        serialPort = new SerialPort(portDescription);
+
+//        serialPort.openPort();
+//        serialPort.setParams(9600, 8, 1,0);
+//        serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_RTSCTS_IN |
+//                SerialPort.FLOWCONTROL_RTSCTS_OUT);
+
     }
 
     public void openConnection() {
         ob = new Scanner(System.in);
-        arduino.openConnection();
+        try {
+            serialPort.openPort();
+            serialPort.setParams(9600, 8, 1,0);
+            serialPort.addEventListener(this, SerialPort.MASK_RXCHAR);
+        } catch (SerialPortException e) {
+            e.printStackTrace();
+        }
         System.out.println("new connection");
-
-//        while(input != "n"){
-//            if(input == "pause") {
-//                paused = !paused;
-//            } else if(started && !paused) {
-//                command(input);
-//                input = ob.nextLine();
-//            }
-//        }
     }
 
     public void closeConnection() {
         ob.close();
-        arduino.closeConnection();
+        try {
+            serialPort.closePort();
+        } catch (SerialPortException e) {
+            e.printStackTrace();
+        }
     }
 
     public void command(String input) {
         openConnection();
-        arduino.serialWrite(input);
+        try {
+            serialPort.writeString(input);
+        } catch (SerialPortException e) {
+            e.printStackTrace();
+        }
         closeConnection();
     }
 
@@ -52,9 +64,14 @@ public class Robot {
         openConnection();
         String input = ob.nextLine();
         while(input != "n") {
-            arduino.serialWrite(input);
-            input = ob.nextLine();
-            System.out.println("command");
+            try {
+                serialPort.writeString(input);
+            } catch (SerialPortException e) {
+                e.printStackTrace();
+            } finally {
+                System.out.println("command");
+                input = ob.nextLine();
+            }
         }
         closeConnection();
     }
@@ -64,13 +81,34 @@ public class Robot {
         //geef route aan arduino
     }
 
-    public String getState() {
-        arduino.openConnection();
-        System.out.println("test");
-        arduino.serialWrite("state", 5, 0);
-        String state = arduino.serialRead(0);
-        System.out.println("Statekk: " + state + " k");
-        arduino.closeConnection();
+    public String getState() throws NullPointerException {
+        String state = null;
+        openConnection();
+        try {
+            serialPort.writeString("state");
+            //state = serialPort.readString();
+        } catch (SerialPortException e) {
+            e.printStackTrace();
+        } finally {
+            System.out.println("command");
+            closeConnection();
+        }
         return state;
     }
+
+    @Override
+    public void serialEvent(SerialPortEvent event) {
+        if(event.isRXCHAR() && event.getEventValue() > 0) {
+            try {
+                String receivedData = serialPort.readString(event.getEventValue());
+                System.out.println("Received response from port: " + receivedData);
+            }
+            catch (SerialPortException ex) {
+                System.out.println("Error in receiving response from port: " + ex);
+            }
+        }
+    }
+
+
 }
+

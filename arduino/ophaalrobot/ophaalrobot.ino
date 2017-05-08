@@ -1,3 +1,4 @@
+
 String data = "", currentState = "idle"; //variable to store incoming data from JAVA 
 
 void setup() {
@@ -20,6 +21,7 @@ void loop() {
     } else if(data == "stop") {
       stopTask();
     } else if(data == "state") {
+      digitalWrite(12,HIGH);
       getState();
     }
   }
@@ -35,7 +37,9 @@ void stopTask() {
 
 void getState() {
   Serial.println(currentState);
-  delay(500);
+//  Serial.end();
+//  delay(5000);
+//  Serial.begin(9600);
 }
 
 

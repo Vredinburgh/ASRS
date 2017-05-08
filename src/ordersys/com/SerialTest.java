@@ -5,16 +5,28 @@ package ordersys.com;
  *
  * https://sourceforge.net/projects/javaarduinolibrary/files/
  */
-import java.util.Scanner;
 
-import arduino.*;
+import jssc.SerialPortException;
 
 public class SerialTest {
 
     public static void main(String[] args) {
 
-        Transporter transporter = new Transporter();
-        System.out.println("Current state: " + transporter.getState());
-        //transporter.testCommand();
+        Transporter transporter = null;
+        try {
+            transporter = new Transporter();
+            //transporter.testCommand();
+        } catch (SerialPortException e) {
+            e.printStackTrace();
+        }
+        try {
+            System.out.println("Current state: " + transporter.getState());
+        } catch(NullPointerException e) {
+            e.printStackTrace();
+        }
+
+//        System.out.println("testMain");
+
+        //transporter.command("1");
     }
 }
