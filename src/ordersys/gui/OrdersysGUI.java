@@ -19,6 +19,7 @@ public class OrdersysGUI extends JFrame {
     public OrdersysGUI() {
         controller = new Controller();
         
+        //Add the left and right panel to the panel
         leftPanel = new LeftGuiPanel(controller);
         rightPanel = new RightGuiPanel(controller);
         

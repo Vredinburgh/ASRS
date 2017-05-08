@@ -35,6 +35,9 @@ public class StatusOrderpickSection extends JPanel {
 
         this.controller = controller;
 
+        //Used to draw the products on the right place
+        //X: Width divided by the amount of columns
+        //Y: Height divided by the amount of rows
         xMultiplier = 395 / 5;
         yMultiplier = 405 / 5;
 

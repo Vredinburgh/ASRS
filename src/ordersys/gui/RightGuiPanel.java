@@ -22,10 +22,12 @@ public class RightGuiPanel extends JPanel {
     public RightGuiPanel(Controller controller) {
         setPreferredSize(new Dimension(800, 600));
         
+        //Add the sections that belongs to the right side of the panel
         orderInformationSection = new OrderInformationSection(controller);
         statusOrderpickSection = new StatusOrderpickSection(controller);
         statusOrderwrapSection = new StatusOrderwrapSection(controller);
         
+        //Set necesarry controller functions
         controller.setOrderSection(orderInformationSection);
         controller.setTspSection(statusOrderpickSection);
         controller.setBppSection(statusOrderwrapSection);

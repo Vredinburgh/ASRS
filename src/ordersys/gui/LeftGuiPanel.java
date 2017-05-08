@@ -22,10 +22,12 @@ public class LeftGuiPanel extends JPanel {
     public LeftGuiPanel(Controller controller) {
         setPreferredSize(new Dimension(500, 600));
         
+        //Add the sections that belongs to the left side of the panel
         orderReadSection = new OrderReadSection(controller);
         startExecuteSection = new StartExecuteSection(controller);
         customerSection = new CustomerSection(controller);
         
+        //Set necesarry controller functions
         controller.setCustomerSection(customerSection);
         
         add(orderReadSection);
