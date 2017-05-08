@@ -17,28 +17,25 @@ public class Robot implements SerialPortEventListener {
 
     public Robot(String portDescription) throws SerialPortException {
         serialPort = new SerialPort(portDescription);
-
-//        serialPort.openPort();
-//        serialPort.setParams(9600, 8, 1,0);
-//        serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_RTSCTS_IN |
-//                SerialPort.FLOWCONTROL_RTSCTS_OUT);
-
+        openConnection();
     }
 
-    public void openConnection() {
-        ob = new Scanner(System.in);
+    public void openConnection()  {
         try {
             serialPort.openPort();
             serialPort.setParams(9600, 8, 1,0);
             serialPort.addEventListener(this, SerialPort.MASK_RXCHAR);
+            Thread.sleep(3000);
         } catch (SerialPortException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+
         System.out.println("new connection");
     }
 
     public void closeConnection() {
-        ob.close();
         try {
             serialPort.closePort();
         } catch (SerialPortException e) {
@@ -47,13 +44,15 @@ public class Robot implements SerialPortEventListener {
     }
 
     public void command(String input) {
-        openConnection();
         try {
             serialPort.writeString(input);
+            Thread.sleep(2000);
         } catch (SerialPortException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        closeConnection();
+
     }
 
     public void command() {
@@ -61,8 +60,8 @@ public class Robot implements SerialPortEventListener {
     }
 
     public void testCommand() {
-        openConnection();
-        String input = ob.nextLine();
+        ob = new Scanner(System.in);
+        String input = "state";
         while(input != "n") {
             try {
                 serialPort.writeString(input);
@@ -73,7 +72,7 @@ public class Robot implements SerialPortEventListener {
                 input = ob.nextLine();
             }
         }
-        closeConnection();
+        ob.close();
     }
 
     public void start(int[] route) {
@@ -83,15 +82,17 @@ public class Robot implements SerialPortEventListener {
 
     public String getState() throws NullPointerException {
         String state = null;
-        openConnection();
         try {
             serialPort.writeString("state");
-            //state = serialPort.readString();
+            Thread.sleep(2000);
+            state = serialPort.readString();
         } catch (SerialPortException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
             System.out.println("command");
-            closeConnection();
+
         }
         return state;
     }
@@ -102,11 +103,15 @@ public class Robot implements SerialPortEventListener {
             try {
                 String receivedData = serialPort.readString(event.getEventValue());
                 System.out.println("Received response from port: " + receivedData);
+                Thread.sleep(200);
             }
             catch (SerialPortException ex) {
                 System.out.println("Error in receiving response from port: " + ex);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
+
     }
 
 
