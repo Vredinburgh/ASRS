@@ -46,6 +46,7 @@ public class OrderReadSection extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == readButton) {
             JFileChooser chooser = new JFileChooser();
+            chooser.setAcceptAllFileFilterUsed(false);
             chooser.setFileFilter(new FileNameExtensionFilter("Alleen XML", "xml"));
             
             int returnValue = chooser.showOpenDialog(null);
