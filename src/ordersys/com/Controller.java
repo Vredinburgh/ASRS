@@ -22,7 +22,7 @@ public class Controller implements SerialPortEventListener {
             serialPort.openPort();
             serialPort.setParams(9600, 8, 1,0);
             serialPort.addEventListener(this, SerialPort.MASK_RXCHAR);
-            Thread.sleep(3000);
+            Thread.sleep(1000);
         } catch (SerialPortException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -43,7 +43,7 @@ public class Controller implements SerialPortEventListener {
     public void sendCommand(String input) {
         try {
             serialPort.writeString(input);
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (SerialPortException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

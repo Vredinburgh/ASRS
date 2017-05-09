@@ -2,9 +2,6 @@ package ordersys.com;
 
 import jssc.*;
 
-import java.util.Scanner;
-
-
 /**
  * Created by ian on 04/05/2017.
  *
@@ -12,7 +9,7 @@ import java.util.Scanner;
  */
 public class Robot {
 
-    Controller controller;
+    private Controller controller;
 
     public Robot(String portDescription) throws SerialPortException {
         controller = new Controller(portDescription);

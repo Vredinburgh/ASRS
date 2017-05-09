@@ -7,8 +7,10 @@ import jssc.SerialPortException;
  */
 public class Transporter extends Robot {
 
-    public Transporter() throws SerialPortException {
-        super("/dev/cu.usbmodem1411");
+    public Transporter(String portDescription) throws SerialPortException {
+        super(portDescription);
     }
+
+
 }
 
