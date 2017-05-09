@@ -52,7 +52,7 @@ public class OrderInformationSection extends JPanel {
         tableModel.addColumn("Y");
         tableModel.addColumn("Voorraad");
 
-        //create table with data
+        //Create table with data
         tableOrders = new JTable(tableModel);
         tableOrders.setFocusable(false);
         tableOrders.setRowSelectionAllowed(false);
@@ -73,7 +73,7 @@ public class OrderInformationSection extends JPanel {
         
         //Bind the product arraylist
         products = controller.getInvoiceData().getOrder().getProducts();
-
+        
         //Add a row to the table for each product
         for(Product p : products) {
             tableModel.addRow(new Object[]{p.getProductNr(), p.getName(), p.getPrice(), p.getHeight(), p.getX(), p.getY(), p.getStock()});
