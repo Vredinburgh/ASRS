@@ -50,6 +50,7 @@ public class OrderInformationSection extends JPanel {
         tableModel.addColumn("Grootte");
         tableModel.addColumn("X");
         tableModel.addColumn("Y");
+        tableModel.addColumn("Voorraad");
 
         //create table with data
         tableOrders = new JTable(tableModel);
@@ -75,7 +76,7 @@ public class OrderInformationSection extends JPanel {
 
         //Add a row to the table for each product
         for(Product p : products) {
-            tableModel.addRow(new Object[]{p.getProductNr(), p.getName(), p.getPrice(), p.getHeight(), p.getX(), p.getY()});
+            tableModel.addRow(new Object[]{p.getProductNr(), p.getName(), p.getPrice(), p.getHeight(), p.getX(), p.getY(), p.getStock()});
         }
     }
 }
