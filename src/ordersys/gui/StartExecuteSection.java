@@ -47,7 +47,7 @@ public class StartExecuteSection extends JPanel implements ActionListener {
             System.out.println("Uitvoeren gestart!");
             
             //For now generate receipt, will be removed in the future
-            Receipt receipt = new Receipt();
+            Receipt receipt = new Receipt(controller.getInvoiceData().getOrder().getProducts());
             receipt.createPDF("testpdf.pdf");
         }
     }

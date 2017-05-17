@@ -16,6 +16,8 @@ import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfWriter;
+import java.util.ArrayList;
+import ordersys.xmlReader.Product;
 
 /**
  *
@@ -23,9 +25,15 @@ import com.itextpdf.text.pdf.PdfWriter;
  */
 public class Receipt {
 
+    private ArrayList<Product> products;
+
     private BaseFont bfBold;
     private BaseFont bf;
     private int pageNumber = 0;
+
+    public Receipt(ArrayList<Product> products) {
+        this.products = products;
+    }
 
     public void createPDF(String pdfFilename) {
 
@@ -48,7 +56,7 @@ public class Receipt {
             boolean beginPage = true;
             int y = 0;
 
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < products.size(); i++) {
                 if (beginPage) {
                     beginPage = false;
                     generateLayout(doc, cb);
@@ -96,7 +104,7 @@ public class Receipt {
             cb.stroke();
 
             // Invoice Header box Text Headings 
-            createHeadings(cb, 422, 743, "Klant nr.");
+            createHeadings(cb, 422, 743, "Klant naam");
             createHeadings(cb, 422, 723, "Pakbon Nr.");
             createHeadings(cb, 422, 703, "Pakbon Datum");
 
@@ -158,15 +166,12 @@ public class Receipt {
         DecimalFormat df = new DecimalFormat("0.00");
 
         try {
-
             createContent(cb, 48, y, String.valueOf(1), PdfContentByte.ALIGN_RIGHT);
-            createContent(cb, 52, y, "Artikel" + String.valueOf(index + 1), PdfContentByte.ALIGN_LEFT);
-            createContent(cb, 152, y, "Artikel omschrijving - Grootte " + String.valueOf(index + 1), PdfContentByte.ALIGN_LEFT);
+            createContent(cb, 52, y, String.valueOf(products.get(index).getProductNr()), PdfContentByte.ALIGN_LEFT);
+            createContent(cb, 152, y, products.get(index).getName(), PdfContentByte.ALIGN_LEFT);
 
-            double price = 4.98;
-            double extPrice = price * 0.79;
-            createContent(cb, 498, y, df.format(price), PdfContentByte.ALIGN_RIGHT);
-            createContent(cb, 568, y, df.format(extPrice), PdfContentByte.ALIGN_RIGHT);
+            createContent(cb, 498, y, String.valueOf(df.format(products.get(index).getPrice())), PdfContentByte.ALIGN_RIGHT);
+            createContent(cb, 568, y, String.valueOf(df.format(products.get(index).getPrice() * 0.79)), PdfContentByte.ALIGN_RIGHT);
 
         } catch (Exception ex) {
             ex.printStackTrace();
