@@ -163,8 +163,8 @@ public class Receipt {
             createContent(cb, 52, y, "Artikel" + String.valueOf(index + 1), PdfContentByte.ALIGN_LEFT);
             createContent(cb, 152, y, "Artikel omschrijving - Grootte " + String.valueOf(index + 1), PdfContentByte.ALIGN_LEFT);
 
-            double price = 2.0;
-            double extPrice = price * (index + 1);
+            double price = 4.98;
+            double extPrice = price * 0.79;
             createContent(cb, 498, y, df.format(price), PdfContentByte.ALIGN_RIGHT);
             createContent(cb, 568, y, df.format(extPrice), PdfContentByte.ALIGN_RIGHT);
 
