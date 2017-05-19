@@ -23,7 +23,7 @@ public class Robot {
         controller.startTestCommand();
     }
 
-    public void sendRoute(int[] route) {
+    public void sendRoute(int[][] route) {
         controller.sendRoute(route);
     }
 }

@@ -11,8 +11,10 @@ public class Controller implements SerialPortEventListener {
 
     private Scanner ob;
     private SerialPort serialPort;
+    private InstructionsGenerator instructionsGenerator;
 
     public Controller(String portDescription) throws SerialPortException {
+        instructionsGenerator = new InstructionsGenerator();
         serialPort = new SerialPort(portDescription);
         openConnection();
     }
@@ -68,8 +70,8 @@ public class Controller implements SerialPortEventListener {
         ob.close();
     }
 
-    public void sendRoute(int[] route) {
-        //geef route aan arduino
+    public void sendRoute(int[][] route) {
+        instructionsGenerator.newInstructions(route);
     }
 
 //    public String getState() throws NullPointerException {

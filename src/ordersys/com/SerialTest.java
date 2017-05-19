@@ -10,18 +10,31 @@ import jssc.SerialPortException;
 
 public class SerialTest {
 
+
+
     public static void main(String[] args) {
 
-        for(int i = 0; i < PortFinder.portNames.length; i++) {
-            System.out.println(PortFinder.portNames[i]);
-        }
+        int[][] kaas = new int[][]{
+                { 2, 3 },
+                { 5, 4 },
+                { 3, 1 }
 
-        Transporter transporter = null;
-        try {
-            transporter = new Transporter(PortFinder.portNames[0]);
-            transporter.testCommand();
-        } catch (SerialPortException e) {
-            e.printStackTrace();
-        }
+        };
+
+        InstructionsGenerator instructionsGenerator = new InstructionsGenerator();
+        instructionsGenerator.newInstructions(kaas);
+        System.out.println(instructionsGenerator.getInstructions());
+
+//        for(int i = 0; i < PortFinder.portNames.length; i++) {
+//            System.out.println(PortFinder.portNames[i]);
+//        }
+//
+//        Transporter transporter = null;
+//        try {
+//            transporter = new Transporter(PortFinder.portNames[0]);
+//            transporter.testCommand();
+//        } catch (SerialPortException e) {
+//            e.printStackTrace();
+//        }
     }
 }
