@@ -30,6 +30,10 @@ public class Controller {
 
     }
 
+    public void startOrderpicking() {
+        
+    }
+    
     public Invoice getInvoiceData() {
         return invoice;
     }

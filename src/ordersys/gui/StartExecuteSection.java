@@ -44,11 +44,12 @@ public class StartExecuteSection extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == startButton) {
-            System.out.println("Uitvoeren gestart!");
+            //Start the orderpicking process
+            controller.startOrderpicking();
             
             //For now generate receipt, will be removed in the future
-            Receipt receipt = new Receipt(controller.getInvoiceData().getOrder().getProducts());
-            receipt.createPDF("testpdf.pdf");
+            /*Receipt receipt = new Receipt(controller.getInvoiceData().getOrder().getProducts());
+            receipt.createPDF("testpdf.pdf");*/
         }
     }
 }
