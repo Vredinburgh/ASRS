@@ -26,5 +26,13 @@ public class Robot {
     public void sendRoute(int[][] route) {
         controller.sendRoute(route);
     }
+    
+    public String getMessage() {
+        return controller.getMessage();
+    }
+    
+    public void resetMessage() {
+        controller.resetMessage();
+    }
 }
 

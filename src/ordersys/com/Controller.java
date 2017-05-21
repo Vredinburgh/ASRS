@@ -12,6 +12,8 @@ public class Controller implements SerialPortEventListener {
     private Scanner ob;
     private SerialPort serialPort;
     private InstructionsGenerator instructionsGenerator;
+    
+    private String message;
 
     public Controller(String portDescription) throws SerialPortException {
         instructionsGenerator = new InstructionsGenerator();
@@ -44,8 +46,8 @@ public class Controller implements SerialPortEventListener {
 
     public void sendCommand(String input) {
         try {
-            serialPort.writeString(input);
             Thread.sleep(1000);
+            serialPort.writeString(input);
         } catch (SerialPortException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -68,6 +70,14 @@ public class Controller implements SerialPortEventListener {
             }
         }
         ob.close();
+    }
+    
+    public String getMessage() {
+        return message;
+    }
+    
+    public void resetMessage() {
+        message = null;
     }
 
     public void sendRoute(int[][] route) {
@@ -96,13 +106,14 @@ public class Controller implements SerialPortEventListener {
         if(event.isRXCHAR() && event.getEventValue() > 0) {
             try {
                 String receivedData = serialPort.readString(event.getEventValue());
-                System.out.println("Received response from port: " + receivedData);
-                Thread.sleep(200);
+                //System.out.println("Received response from port: " + receivedData);
+                message = receivedData;
+                Thread.sleep(10);
             }
             catch (SerialPortException ex) {
                 System.out.println("Error in receiving response from port: " + ex);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch(InterruptedException ex) {
+                System.out.println("Error: "+ex);
             }
         }
     }

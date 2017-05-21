@@ -48,6 +48,12 @@ public class StatusOrderpickSection extends JPanel {
         this.tsp = tsp;
         shortestPath = tsp.returnShortestPath();
     }
+    
+    public void updateProduct(Product p) {
+        Graphics g = this.getGraphics();
+        g.setColor(Color.red);
+        g.fillRect(p.getX() * xMultiplier - 60, (6 - p.getY()) * yMultiplier - 60, 50, 50);
+    }
 
     @Override
     public void paintComponent(Graphics g) {
@@ -56,9 +62,9 @@ public class StatusOrderpickSection extends JPanel {
         if (tsp != null && tsp.startTsp) {
             for (Product p : tsp.products) {
                 g.setColor(Color.black);
-                g.drawString(p.getName(), p.getX() * xMultiplier - 60, p.getY() * yMultiplier - 60);
+                g.drawString(p.getName(), p.getX() * xMultiplier - 60, (6 - p.getY()) * yMultiplier - 60);
                 g.setColor(Color.green);
-                g.fillRect(p.getX() * xMultiplier - 60, p.getY() * yMultiplier - 60, 50, 50);
+                g.fillRect(p.getX() * xMultiplier - 60, (6 - p.getY()) * yMultiplier - 60, 50, 50);
             }
             
             g.setColor(Color.black);
@@ -67,9 +73,9 @@ public class StatusOrderpickSection extends JPanel {
             for (int i = 0; i < shortestPath.length; i++) {
                 if (i + 1 < shortestPath.length) {
                     int x1 = tsp.products.get(shortestPath[i]).getX() * xMultiplier - 30;
-                    int y1 = tsp.products.get(shortestPath[i]).getY() * yMultiplier - 30;
+                    int y1 = (6 - tsp.products.get(shortestPath[i]).getY()) * yMultiplier - 30;
                     int x2 = tsp.products.get(shortestPath[i + 1]).getX() * xMultiplier - 30;
-                    int y2 = tsp.products.get(shortestPath[i + 1]).getY() * yMultiplier - 30;
+                    int y2 = (6 - tsp.products.get(shortestPath[i + 1]).getY()) * yMultiplier - 30;
 
                     g.drawLine(x1, y1, x2, y2);
                 }
