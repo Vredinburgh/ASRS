@@ -22,7 +22,7 @@ import ordersys.xmlReader.Invoice;
 public class Controller {
 
     public Transporter transporter;
-    
+
     private CustomerSection customerSection;
     private OrderInformationSection orderSection;
     private StatusOrderpickSection tspSection;
@@ -36,18 +36,18 @@ public class Controller {
 
     }
 
-    public void startOrderpicking() {    
-        int path[] = tsp.returnShortestPath();
-        String transporterPort = PortFinder.portNames[0];
-        System.out.println(Arrays.toString(path));
+    public void startOrderpicking() {
         try {
+            int path[] = tsp.returnShortestPath();
+            String transporterPort = PortFinder.portNames[0];
+            
             transporter = new Transporter(transporterPort);
-            for(int i = 0; i < path.length; i++) {
+            for (int i = 0; i < path.length; i++) {
                 String x = String.valueOf(tsp.products.get(path[i]).getX());
                 String y = String.valueOf(tsp.products.get(path[i]).getY());
                 transporter.command(x + y);
-                System.out.println(x+y);
-                while(transporter.getMessage() == null) {
+                System.out.println(x + y);
+                while (transporter.getMessage() == null) {
                     System.out.print("");
                 }
                 tspSection.updateProduct(tsp.products.get(path[i]));
@@ -57,6 +57,10 @@ public class Controller {
             //System.out.println("Helemaal klaaar!!!");
         } catch (SerialPortException e) {
             e.printStackTrace();
+        } catch(ArrayIndexOutOfBoundsException ex) {
+            System.out.println("Er zijn geen poorten beschikbaar");
+        } catch(NullPointerException ex) {
+            System.out.println("Je moet eerst een XML bestand inladen");
         }
     }
 
