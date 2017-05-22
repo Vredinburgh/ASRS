@@ -20,12 +20,15 @@ public class TSPHandler {
     private StatusOrderpickSection tspSection;
     
     public ArrayList<Product> products;
-
+    
+    public int[] shortestPath;
+    
     public boolean startTsp;
 
     public TSPHandler(StatusOrderpickSection tspSection, ArrayList<Product> products) {
         this.tspSection = tspSection;
         this.products = products;
+        shortestPath = new int[products.size()];
     }
 
     public void startTsp() {

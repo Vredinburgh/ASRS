@@ -38,7 +38,7 @@ public class Controller {
 
     public void startOrderpicking() {
         try {
-            int path[] = tsp.returnShortestPath();
+            int path[] = tsp.shortestPath;
             String transporterPort = PortFinder.portNames[0];
             
             transporter = new Transporter(transporterPort);
@@ -51,10 +51,10 @@ public class Controller {
                     System.out.print("");
                 }
                 tspSection.updateProduct(tsp.products.get(path[i]));
-                System.out.println("Oke dat was een product..");
+                System.out.println("Oke dat was een: " + tsp.products.get(path[i]).getName());
                 transporter.resetMessage();
             }
-            //System.out.println("Helemaal klaaar!!!");
+            System.out.println("Helemaal klaaar!!!");
         } catch (SerialPortException e) {
             e.printStackTrace();
         } catch(ArrayIndexOutOfBoundsException ex) {

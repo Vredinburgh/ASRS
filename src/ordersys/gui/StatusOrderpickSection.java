@@ -8,6 +8,7 @@ package ordersys.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.util.Arrays;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import ordersys.Controller;
@@ -47,6 +48,7 @@ public class StatusOrderpickSection extends JPanel {
     public void setTspHandler(TSPHandler tsp) {
         this.tsp = tsp;
         shortestPath = tsp.returnShortestPath();
+        tsp.shortestPath = shortestPath;
     }
     
     public void updateProduct(Product p) {
