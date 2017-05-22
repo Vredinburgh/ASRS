@@ -30,9 +30,5 @@ public class Robot {
     public String getMessage() {
         return controller.getMessage();
     }
-    
-    public void resetMessage() {
-        controller.resetMessage();
-    }
-}
+ }
 

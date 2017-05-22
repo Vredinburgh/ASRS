@@ -75,10 +75,6 @@ public class Controller implements SerialPortEventListener {
     public String getMessage() {
         return message;
     }
-    
-    public void resetMessage() {
-        message = null;
-    }
 
     public void sendRoute(int[][] route) {
         instructionsGenerator.newInstructions(route);
@@ -108,7 +104,8 @@ public class Controller implements SerialPortEventListener {
                 String receivedData = serialPort.readString(event.getEventValue());
                 //System.out.println("Received response from port: " + receivedData);
                 message = receivedData;
-                Thread.sleep(10);
+                Thread.sleep(100);
+                message = null;
             }
             catch (SerialPortException ex) {
                 System.out.println("Error in receiving response from port: " + ex);
