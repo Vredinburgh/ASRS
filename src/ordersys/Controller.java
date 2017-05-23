@@ -5,6 +5,9 @@
  */
 package ordersys;
 
+import java.awt.Desktop;
+import java.io.File;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import jssc.SerialPortException;
 import ordersys.com.PortFinder;
@@ -32,8 +35,10 @@ public class Controller {
     private TSPHandler tsp;
     private BPPHandler bpp;
 
+    private JDialog messageDialog;
+
     public Controller() {
-        
+        messageDialog = new JDialog();
     }
 
     public void startOrderpicking() {
@@ -73,6 +78,7 @@ public class Controller {
                     System.out.println("Laatste product gehad");
                     unloadProducts();
                     System.out.println("Klaar met lossen, dus helemaal klaar!");
+                    doneUnloading();
                 }
             }
         } catch (SerialPortException e) {
@@ -85,10 +91,43 @@ public class Controller {
     }
 
     private void unloadProducts() {
-        //Hier een dialog
+        //Create message pane
+        final JOptionPane messagePane = new JOptionPane();
+
+        //Bind the message bind to the dialog object
+        messageDialog = messagePane.createDialog("Lossen.. Even geduld..");
+        messageDialog.setModal(false);
+
+        //Set the dialog to visible
+        messageDialog.setVisible(true);
+
+        //Send unload command
         transporter.command("00");
         while (transporter.getMessage() == null) {
             System.out.print("");
+        }
+
+        //If unloading done, close the message
+        messageDialog.dispose();
+    }
+
+    private void doneUnloading() {
+        //Done unloading, ask the user if he wants to generate a receipt
+        int dialogResult = JOptionPane.showConfirmDialog(null, "Klaar. Zou u de pakbon willen openen?", "Pakbon", JOptionPane.YES_NO_OPTION);
+        if (dialogResult == JOptionPane.YES_OPTION) {
+            //Generate the receipt
+            String receiptName = "receipt.pdf";
+            Receipt receipt = new Receipt(getInvoiceData().getOrder().getProducts());
+            receipt.createPDF(receiptName);
+            
+            //Open the receipt
+            try {
+            Desktop desktop = Desktop.getDesktop();
+            File receiptFile = new File("C:/Users/gerri/Desktop/"+receiptName);
+            desktop.open(receiptFile);
+            } catch (Exception ex) {
+                System.out.println("Kan de pakbon helaas niet openen");
+            }
         }
     }
 

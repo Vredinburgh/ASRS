@@ -13,7 +13,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import ordersys.Controller;
-import ordersys.Receipt;
 
 /**
  *
@@ -46,10 +45,6 @@ public class StartExecuteSection extends JPanel implements ActionListener {
         if(e.getSource() == startButton) {
             //Start the orderpicking process
             controller.startOrderpicking();
-            
-            //For now generate receipt, will be removed in the future
-            /*Receipt receipt = new Receipt(controller.getInvoiceData().getOrder().getProducts());
-            receipt.createPDF("testpdf.pdf");*/
         }
     }
 }
