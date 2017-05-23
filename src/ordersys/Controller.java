@@ -113,7 +113,7 @@ public class Controller {
 
     private void doneUnloading() {
         //Done unloading, ask the user if he wants to generate a receipt
-        int dialogResult = JOptionPane.showConfirmDialog(null, "Klaar. Zou u de pakbon willen openen?", "Pakbon", JOptionPane.YES_NO_OPTION);
+        int dialogResult = JOptionPane.showConfirmDialog(null, "Klaar. Wilt u de pakbon openen?", "Pakbon", JOptionPane.YES_NO_OPTION);
         if (dialogResult == JOptionPane.YES_OPTION) {
             //Generate the receipt
             String receiptName = "receipt.pdf";
