@@ -63,7 +63,7 @@ public class Controller {
 
                 //Check if three products are loaded, if so return to unloading
                 //place.
-                if (productCounter > 1) {
+                if (productCounter > 0) {
                     System.out.println("Lossen terug naar het lospunt");
                     //Set loading text at the orderpick section
                     unloadProducts();
@@ -79,6 +79,9 @@ public class Controller {
                     unloadProducts();
                     System.out.println("Klaar met lossen, dus helemaal klaar!");
                     doneUnloading();
+                    
+                    //Close connection
+                    
                 }
             }
         } catch (SerialPortException e) {
