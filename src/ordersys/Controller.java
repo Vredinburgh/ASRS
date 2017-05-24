@@ -154,7 +154,7 @@ public class Controller {
         tsp.startTsp();
 
         //Give signal to start the TSP and BPP
-        bpp = new BPPHandler(bppSection);
+        bpp = new BPPHandler(bppSection, invoice.getOrder().getProducts());
         bppSection.setBppHandler(bpp);
         bpp.startBpp();
     }

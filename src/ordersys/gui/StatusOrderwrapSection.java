@@ -41,6 +41,7 @@ public class StatusOrderwrapSection extends JPanel {
         super.paintComponent(g);
 
         if (bpp != null && bpp.startBpp) {
+            System.out.println("");
             g.drawString("Doos 1", 30, 50);
             g.drawString("Doos 2", 205, 50);
 

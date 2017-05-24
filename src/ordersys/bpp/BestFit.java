@@ -7,19 +7,18 @@ import java.util.ArrayList;
  */
 public class BestFit {
 
-    private ArrayList<Product> producten = new ArrayList<>();
+    private ArrayList<ProductBPP> producten = new ArrayList<>();
     private ArrayList<Container> containers = new ArrayList<>();
     boolean newContainer = true;
 
-    public BestFit(ArrayList<Product> producten) {
+    public BestFit(ArrayList<ProductBPP> producten) {
         this.producten = producten;
     }
 
     public void vulContainers() {
-
         containers.add(new Container());
 
-        for (Product product : producten) {
+        for (ProductBPP product : producten) {
             if (product.getGrootte() <= checkSmallestSpace(containers).getFreeSpace() && !product.isPacked()) {
                 checkSmallestSpace(containers).addProduct(product);
                 product.setPacked(true);

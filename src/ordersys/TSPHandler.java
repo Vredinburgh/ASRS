@@ -6,7 +6,6 @@
 package ordersys;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import ordersys.gui.StatusOrderpickSection;
 import ordersys.tsp.AntColonyOptimization;
 import ordersys.xmlReader.Product;
