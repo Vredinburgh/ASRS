@@ -7,11 +7,13 @@ public class ProductBPP {
 
     private boolean packed;
     private int grootte;
+    private int id;
     private int personalNumber;
     private static int nummer = 0;
 
-    public ProductBPP(int grootte) {
+    public ProductBPP(int grootte, int id) {
         this.grootte = grootte;
+        this.id = id;
         personalNumber = nummer;
         nummer++;
     }
@@ -26,6 +28,10 @@ public class ProductBPP {
 
     public int getGrootte() {
         return grootte;
+    }
+    
+    public int getId() {
+        return id;
     }
 
     @Override

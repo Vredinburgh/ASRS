@@ -11,6 +11,7 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import jssc.SerialPortException;
 import ordersys.com.PortFinder;
+import ordersys.com.Sorter;
 import ordersys.com.Transporter;
 import ordersys.gui.CustomerSection;
 import ordersys.gui.OrderInformationSection;
@@ -25,6 +26,7 @@ import ordersys.xmlReader.Invoice;
 public class Controller {
 
     public Transporter transporter;
+    public Sorter sorter;
 
     private CustomerSection customerSection;
     private OrderInformationSection orderSection;
@@ -37,6 +39,8 @@ public class Controller {
 
     private JDialog messageDialog;
 
+    private int totalProductCounter = 0;
+
     public Controller() {
         messageDialog = new JDialog();
     }
@@ -45,10 +49,16 @@ public class Controller {
         try {
             int path[] = tsp.shortestPath;
             int productCounter = 0;
+
             String transporterPort = PortFinder.portNames[0];
+            String sorterPort = PortFinder.portNames[1];
 
             transporter = new Transporter(transporterPort);
+            sorter = new Sorter(sorterPort);
+
             for (int i = 0; i < path.length; i++) {
+                totalProductCounter++;
+
                 String x = String.valueOf(tsp.products.get(path[i]).getX());
                 String y = String.valueOf(tsp.products.get(path[i]).getY());
 
@@ -79,9 +89,8 @@ public class Controller {
                     unloadProducts();
                     System.out.println("Klaar met lossen, dus helemaal klaar!");
                     doneUnloading();
-                    
+
                     //Close connection
-                    
                 }
             }
         } catch (SerialPortException e) {
@@ -114,6 +123,10 @@ public class Controller {
         messageDialog.dispose();
     }
 
+    private void unloadToBin(int productId) {
+
+    }
+
     private void doneUnloading() {
         //Done unloading, ask the user if he wants to generate a receipt
         int dialogResult = JOptionPane.showConfirmDialog(null, "Klaar. Wilt u de pakbon openen?", "Pakbon", JOptionPane.YES_NO_OPTION);
@@ -122,12 +135,12 @@ public class Controller {
             String receiptName = "receipt.pdf";
             Receipt receipt = new Receipt(getInvoiceData().getOrder().getProducts());
             receipt.createPDF(receiptName);
-            
+
             //Open the receipt
             try {
-            Desktop desktop = Desktop.getDesktop();
-            File receiptFile = new File("C:/Users/gerri/Desktop/"+receiptName);
-            desktop.open(receiptFile);
+                Desktop desktop = Desktop.getDesktop();
+                File receiptFile = new File("C:/Users/gerri/Desktop/" + receiptName);
+                desktop.open(receiptFile);
             } catch (Exception ex) {
                 System.out.println("Kan de pakbon helaas niet openen");
             }
@@ -154,7 +167,7 @@ public class Controller {
         tsp.startTsp();
 
         //Give signal to start the TSP and BPP
-        bpp = new BPPHandler(bppSection, invoice.getOrder().getProducts());
+        bpp = new BPPHandler(bppSection, tsp);
         bppSection.setBppHandler(bpp);
         bpp.startBpp();
     }

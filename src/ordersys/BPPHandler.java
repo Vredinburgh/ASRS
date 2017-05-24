@@ -20,28 +20,34 @@ public class BPPHandler {
 
     private StatusOrderwrapSection bppSection;
 
-    private ArrayList<Product> orderProducts;
     private ArrayList<ProductBPP> bppProducts;
+    
+    private TSPHandler tspHandler;
+    
+    public BestFit bestFit;
 
     public boolean startBpp;
 
-    public BPPHandler(StatusOrderwrapSection bppSection, ArrayList<Product> orderProducts) {
-        this.orderProducts = orderProducts;
+    public BPPHandler(StatusOrderwrapSection bppSection, TSPHandler tspHandler) {
         this.bppSection = bppSection;
         
         bppProducts = new ArrayList<ProductBPP>();
+        
+        this.tspHandler = tspHandler;
     }
 
     public void startBpp() {
         startBpp = true;
 
         //Fill the bpp array with products
-        for (Product p : orderProducts) {
-            bppProducts.add(new ProductBPP(p.getHeight())); 
+        for (int i = 0; i < tspHandler.shortestPath.length; i++) {
+            int size = tspHandler.products.get(tspHandler.shortestPath[i]).getHeight();
+            int id = tspHandler.products.get(tspHandler.shortestPath[i]).getProductNr();
+            bppProducts.add(new ProductBPP(size, id));
         }
 
         //Execute the bestfit algorithm
-        BestFit bestFit = new BestFit(bppProducts);
+        bestFit = new BestFit(bppProducts);
         bestFit.vulContainers();
 
         bppSection.repaint();

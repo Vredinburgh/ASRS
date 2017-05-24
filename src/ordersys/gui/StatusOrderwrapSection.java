@@ -35,6 +35,10 @@ public class StatusOrderwrapSection extends JPanel {
     public void setBppHandler(BPPHandler bpp) {
         this.bpp = bpp;
     }
+    
+    public void updateContainer() {
+        
+    }
 
     @Override
     public void paintComponent(Graphics g) {
