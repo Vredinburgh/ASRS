@@ -13,6 +13,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import ordersys.BPPHandler;
 import ordersys.Controller;
+import ordersys.bpp.ProductBPP;
 
 /**
  *
@@ -37,22 +38,28 @@ public class StatusOrderwrapSection extends JPanel {
         this.bpp = bpp;
     }
 
-    public void updateContainer(int container, int size) {
+    public void updateContainer(ProductBPP product, int sizePreviousProduct, int container, int amountsInBin) {
         Graphics gr = this.getGraphics();
         Random rand = new Random();
-        
+
         float r = rand.nextFloat();
         float g = rand.nextFloat();
         float b = rand.nextFloat();
-        
+
         Color randomColor = new Color(r, g, b);
 
         gr.setColor(randomColor);
-        
+
         if (container == 1) {
-            gr.fillRect(30, 60, 158, 310);
+            System.out.println("Doos 1: " + sizePreviousProduct);
+            if (sizePreviousProduct > 1) {
+                gr.fillRect(31, (293 + 77) - (310 / (20 / sizePreviousProduct)), 157, -(310 / (20 / product.getGrootte())));
+            } else {
+                gr.fillRect(31, (293 + 77), 157, -(310 / (20 / product.getGrootte())));
+            }
         } else if (container == 2) {
-            gr.fillRect(205, 60, 158, 310);
+            System.out.println("Doos 2: " + amountsInBin);
+            gr.fillRect(206, 293 - ((293 - 60) / (20 / sizePreviousProduct)), 157, 310 / (20 / product.getGrootte()));
         }
     }
 

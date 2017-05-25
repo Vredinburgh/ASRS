@@ -42,13 +42,22 @@ public class Controller {
     private JDialog messageDialog;
 
     private int totalProductCounter = 0;
+    private int sizePreviousProductBin1 = 1;
+    private int sizePreviousProductBin2 = 1;
 
     public Controller() {
         messageDialog = new JDialog();
     }
 
     public void startOrderpicking() {
+        /*unloadToBin(1);
+        unloadToBin(2);
+        unloadToBin(3);
         unloadToBin(4);
+        unloadToBin(5);*/
+        bppSection.updateContainer(new ProductBPP(5, 1), 1, 1, 0);
+        bppSection.updateContainer(new ProductBPP(5, 1), 5, 1, 0);
+        bppSection.updateContainer(new ProductBPP(10, 1), 5, 1, 0);
         try {
             int path[] = tsp.shortestPath;
             int productCounter = 0;
@@ -118,19 +127,19 @@ public class Controller {
 
         //Send unload command
         transporter.command("00");
-        
-        while(sorter.getMessage() != "1") {
+
+        while (sorter.getMessage() != "1") {
             System.out.println("");
         }
-        
+
         unloadToBin(totalProductCounter - 1);
-        
-        while(sorter.getMessage() != "2") {
+
+        while (sorter.getMessage() != "2") {
             System.out.println("");
         }
-        
+
         unloadToBin(totalProductCounter);
-        
+
         while (transporter.getMessage() == null) {
             System.out.print("");
         }
@@ -140,12 +149,26 @@ public class Controller {
     }
 
     private void unloadToBin(int productId) {
-        for(Container c : bpp.bestFit.getContainers()) {
-            for(ProductBPP product : c.getProducten()) {
-                if(product.getId() == productId) {
-                    System.out.println("Dus in doos: "+c.getId());
-                    System.out.println("Product id: "+product.getId());
-                    bppSection.updateContainer(c.getId(), product.getGrootte());
+        //Get the container id and the size of a product
+        //and update the panel
+        for (Container c : bpp.bestFit.getContainers()) {
+            if (c.getId() == 1) {
+                for (ProductBPP product : c.getProducten()) {
+                    if (product.getId() == productId) {
+                        /*System.out.println("Dus in doos: " + c.getId());
+                    System.out.println("Product id: " + product.getId());*/
+                        bppSection.updateContainer(product, sizePreviousProductBin1, c.getId(), c.getProducten().indexOf(product));
+                        sizePreviousProductBin1 = product.getGrootte();
+                    }
+                }
+            } else if (c.getId() == 2) {
+                for (ProductBPP product : c.getProducten()) {
+                    if (product.getId() == productId) {
+                        /*System.out.println("Dus in doos: " + c.getId());
+                    System.out.println("Product id: " + product.getId());*/
+                        bppSection.updateContainer(product, sizePreviousProductBin2, c.getId(), c.getProducten().indexOf(product));
+                        sizePreviousProductBin2 = product.getGrootte();
+                    }
                 }
             }
         }
