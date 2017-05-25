@@ -35,6 +35,10 @@ public class Container {
         return freeSpace;
     }
     
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public int getId() {
         return id;
     }

@@ -51,12 +51,14 @@ public class Controller {
         messageDialog = new JDialog();
     }
 
+    private int testp = 1;
+
     public void startOrderpicking() {
-        unloadToBin(1);
-        unloadToBin(2);
-        unloadToBin(3);
-        unloadToBin(4);
-        unloadToBin(5);
+        if (testp <= 7) {
+            unloadToBin(testp);
+            System.out.println("tt" + testp);
+            testp++;
+        }
 
         try {
             int path[] = tsp.shortestPath;
@@ -151,6 +153,7 @@ public class Controller {
     private void unloadToBin(int productId) {
         //Get the container id and the size of a product
         //and update the panel
+        containerLoop:
         for (Container c : bpp.bestFit.getContainers()) {
             if (c.getId() == 1) {
                 for (ProductBPP product : c.getProducten()) {
@@ -158,6 +161,7 @@ public class Controller {
                         bppSection.updateContainer(product, sizePreviousProductBin1, c.getId(), amountProductsBin1);
                         sizePreviousProductBin1 = product.getGrootte();
                         amountProductsBin1++;
+                        break containerLoop;
                     }
                 }
             } else if (c.getId() == 2) {
@@ -166,7 +170,24 @@ public class Controller {
                         bppSection.updateContainer(product, sizePreviousProductBin2, c.getId(), amountProductsBin2);
                         sizePreviousProductBin2 = product.getGrootte();
                         amountProductsBin2++;
+                        break containerLoop;
                     }
+                }
+            } else if (c.getId() > 2) {
+                //Bins full, ask to replace bins
+                int dialogResult = JOptionPane.showConfirmDialog(null, "Dozen zijn vol, verwissel de dozen.", "Dozen vol", JOptionPane.YES_NO_OPTION);
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                    bpp.bestFit.getContainers().remove(0);
+                    bpp.bestFit.getContainers().remove(1);
+                    bpp.bestFit.getContainers().get(2).setId(1);
+
+                    amountProductsBin1 = 0;
+                    amountProductsBin2 = 0;
+                    sizePreviousProductBin1 = 1;
+                    sizePreviousProductBin2 = 1;
+                    
+                    bppSection.repaint();
+                    unloadToBin(productId);
                 }
             }
         }
