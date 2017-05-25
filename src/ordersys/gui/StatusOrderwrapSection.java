@@ -8,6 +8,7 @@ package ordersys.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import ordersys.BPPHandler;
@@ -35,9 +36,24 @@ public class StatusOrderwrapSection extends JPanel {
     public void setBppHandler(BPPHandler bpp) {
         this.bpp = bpp;
     }
-    
-    public void updateContainer() {
+
+    public void updateContainer(int container, int size) {
+        Graphics gr = this.getGraphics();
+        Random rand = new Random();
         
+        float r = rand.nextFloat();
+        float g = rand.nextFloat();
+        float b = rand.nextFloat();
+        
+        Color randomColor = new Color(r, g, b);
+
+        gr.setColor(randomColor);
+        
+        if (container == 1) {
+            gr.fillRect(30, 60, 158, 310);
+        } else if (container == 2) {
+            gr.fillRect(205, 60, 158, 310);
+        }
     }
 
     @Override

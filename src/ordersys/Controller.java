@@ -10,6 +10,8 @@ import java.io.File;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import jssc.SerialPortException;
+import ordersys.bpp.Container;
+import ordersys.bpp.ProductBPP;
 import ordersys.com.PortFinder;
 import ordersys.com.Sorter;
 import ordersys.com.Transporter;
@@ -46,6 +48,7 @@ public class Controller {
     }
 
     public void startOrderpicking() {
+        unloadToBin(4);
         try {
             int path[] = tsp.shortestPath;
             int productCounter = 0;
@@ -115,6 +118,19 @@ public class Controller {
 
         //Send unload command
         transporter.command("00");
+        
+        while(sorter.getMessage() != "1") {
+            System.out.println("");
+        }
+        
+        unloadToBin(totalProductCounter - 1);
+        
+        while(sorter.getMessage() != "2") {
+            System.out.println("");
+        }
+        
+        unloadToBin(totalProductCounter);
+        
         while (transporter.getMessage() == null) {
             System.out.print("");
         }
@@ -124,7 +140,15 @@ public class Controller {
     }
 
     private void unloadToBin(int productId) {
-
+        for(Container c : bpp.bestFit.getContainers()) {
+            for(ProductBPP product : c.getProducten()) {
+                if(product.getId() == productId) {
+                    System.out.println("Dus in doos: "+c.getId());
+                    System.out.println("Product id: "+product.getId());
+                    bppSection.updateContainer(c.getId(), product.getGrootte());
+                }
+            }
+        }
     }
 
     private void doneUnloading() {

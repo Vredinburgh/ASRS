@@ -10,13 +10,15 @@ public class BestFit {
     private ArrayList<ProductBPP> producten = new ArrayList<>();
     private ArrayList<Container> containers = new ArrayList<>();
     boolean newContainer = true;
+    
+    private int containerCounter = 1;
 
     public BestFit(ArrayList<ProductBPP> producten) {
         this.producten = producten;
     }
 
     public void vulContainers() {
-        containers.add(new Container());
+        containers.add(new Container(containerCounter));
 
         for (ProductBPP product : producten) {
             if (product.getGrootte() <= checkSmallestSpace(containers).getFreeSpace() && !product.isPacked()) {
@@ -35,7 +37,8 @@ public class BestFit {
                 }
             }
             if (newContainer && !product.isPacked()) {
-                Container container = new Container();
+                containerCounter++;
+                Container container = new Container(containerCounter);
                 container.addProduct(product);
                 product.setPacked(true);
                 containers.add(container);

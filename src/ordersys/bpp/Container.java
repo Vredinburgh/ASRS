@@ -7,6 +7,7 @@ import java.util.ArrayList;
  */
 public class Container {
 
+    private int id = 0;
     private int totalSpace = 20;
     private int freeSpace = 20;
     private ArrayList<ProductBPP> producten = new ArrayList<>();
@@ -19,7 +20,8 @@ public class Container {
         producten.add(product);
     }
 
-    public Container() {
+    public Container(int id) {
+        this.id = id;
     }
 
     protected void addProduct(ProductBPP product) {
@@ -31,6 +33,10 @@ public class Container {
 
     public int getFreeSpace() {
         return freeSpace;
+    }
+    
+    public int getId() {
+        return id;
     }
 
     public ArrayList<ProductBPP> getProducten() {

@@ -49,6 +49,10 @@ public class BPPHandler {
         //Execute the bestfit algorithm
         bestFit = new BestFit(bppProducts);
         bestFit.vulContainers();
+        
+        for(Container c : bestFit.getContainers()) {
+            System.out.println(c.toString());
+        }
 
         bppSection.repaint();
     }
