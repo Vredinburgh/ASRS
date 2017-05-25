@@ -51,15 +51,18 @@ public class StatusOrderwrapSection extends JPanel {
         gr.setColor(randomColor);
 
         if (container == 1) {
-            System.out.println("Doos 1: " + sizePreviousProduct);
             if (sizePreviousProduct > 1) {
-                gr.fillRect(31, (293 + 77) - (310 / (20 / sizePreviousProduct)), 157, -(310 / (20 / product.getGrootte())));
+                gr.fillRect(31, (293 + 77) - (310 / (20 / sizePreviousProduct) * amountsInBin), 157, -(310 / (20 / product.getGrootte())));
             } else {
-                gr.fillRect(31, (293 + 77), 157, -(310 / (20 / product.getGrootte())));
+                gr.fillRect(31, (293 + 77) - (310 / (20 / sizePreviousProduct) * amountsInBin), 157, -(310 / (20 / product.getGrootte())));
             }
         } else if (container == 2) {
-            System.out.println("Doos 2: " + amountsInBin);
-            gr.fillRect(206, 293 - ((293 - 60) / (20 / sizePreviousProduct)), 157, 310 / (20 / product.getGrootte()));
+            //gr.fillRect(206, 293 - ((293 - 60) / (20 / sizePreviousProduct)), 157, 310 / (20 / product.getGrootte()));
+            if (sizePreviousProduct > 1) {
+                gr.fillRect(206, (293 + 77) - (310 / (20 / sizePreviousProduct) * amountsInBin), 157, -(310 / (20 / product.getGrootte())));
+            } else {
+                gr.fillRect(206, (293 + 77) - (310 / (20 / sizePreviousProduct) * amountsInBin), 157, -(310 / (20 / product.getGrootte())));
+            }
         }
     }
 

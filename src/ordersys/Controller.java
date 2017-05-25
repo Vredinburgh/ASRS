@@ -42,6 +42,8 @@ public class Controller {
     private JDialog messageDialog;
 
     private int totalProductCounter = 0;
+    private int amountProductsBin1 = 0;
+    private int amountProductsBin2 = 0;
     private int sizePreviousProductBin1 = 1;
     private int sizePreviousProductBin2 = 1;
 
@@ -50,14 +52,12 @@ public class Controller {
     }
 
     public void startOrderpicking() {
-        /*unloadToBin(1);
+        unloadToBin(1);
         unloadToBin(2);
         unloadToBin(3);
         unloadToBin(4);
-        unloadToBin(5);*/
-        bppSection.updateContainer(new ProductBPP(5, 1), 1, 1, 0);
-        bppSection.updateContainer(new ProductBPP(5, 1), 5, 1, 0);
-        bppSection.updateContainer(new ProductBPP(10, 1), 5, 1, 0);
+        unloadToBin(5);
+
         try {
             int path[] = tsp.shortestPath;
             int productCounter = 0;
@@ -155,19 +155,17 @@ public class Controller {
             if (c.getId() == 1) {
                 for (ProductBPP product : c.getProducten()) {
                     if (product.getId() == productId) {
-                        /*System.out.println("Dus in doos: " + c.getId());
-                    System.out.println("Product id: " + product.getId());*/
-                        bppSection.updateContainer(product, sizePreviousProductBin1, c.getId(), c.getProducten().indexOf(product));
+                        bppSection.updateContainer(product, sizePreviousProductBin1, c.getId(), amountProductsBin1);
                         sizePreviousProductBin1 = product.getGrootte();
+                        amountProductsBin1++;
                     }
                 }
             } else if (c.getId() == 2) {
                 for (ProductBPP product : c.getProducten()) {
                     if (product.getId() == productId) {
-                        /*System.out.println("Dus in doos: " + c.getId());
-                    System.out.println("Product id: " + product.getId());*/
-                        bppSection.updateContainer(product, sizePreviousProductBin2, c.getId(), c.getProducten().indexOf(product));
+                        bppSection.updateContainer(product, sizePreviousProductBin2, c.getId(), amountProductsBin2);
                         sizePreviousProductBin2 = product.getGrootte();
+                        amountProductsBin2++;
                     }
                 }
             }
