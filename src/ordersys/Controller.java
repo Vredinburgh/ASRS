@@ -51,14 +51,11 @@ public class Controller {
         messageDialog = new JDialog();
     }
 
-    private int testp = 1;
-
     public void startOrderpicking() {
-        if (testp <= 7) {
+        /*if (testp <= 5) {
             unloadToBin(testp);
-            System.out.println("tt" + testp);
             testp++;
-        }
+        }*/
 
         try {
             int path[] = tsp.shortestPath;
@@ -129,18 +126,6 @@ public class Controller {
 
         //Send unload command
         transporter.command("00");
-
-        while (sorter.getMessage() != "1") {
-            System.out.println("");
-        }
-
-        unloadToBin(totalProductCounter - 1);
-
-        while (sorter.getMessage() != "2") {
-            System.out.println("");
-        }
-
-        unloadToBin(totalProductCounter);
 
         while (transporter.getMessage() == null) {
             System.out.print("");
