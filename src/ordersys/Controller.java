@@ -50,7 +50,6 @@ public class Controller {
     private int sizePreviousProductBin1 = 1;
     private int sizePreviousProductBin2 = 1;
 
-    private boolean unloadedProducts = false;
     private boolean lastProduct = false;
 
     public Controller() {
@@ -68,10 +67,8 @@ public class Controller {
             int productCounter = 0;
 
             String transporterPort = PortFinder.portNames[0];
-            String sorterPort = PortFinder.portNames[1];
 
             transporter = new Transporter(transporterPort);
-            sorter = new Sorter(sorterPort);
 
             for (int i = 0; i < path.length; i++) {
                 totalProductCounter++;
@@ -95,8 +92,6 @@ public class Controller {
                     //System.out.println("Lossen terug naar het lospunt");
                     //Set loading text at the orderpick section
                     unloadProducts();
-                    //System.out.println("Klaar met lossen");
-                    unloadedProducts = false;
                     productCounter = 0;
                 } else {
                     productCounter++;
@@ -104,12 +99,10 @@ public class Controller {
 
                 //If the loaded products is the last..
                 if (i == path.length - 1) {
-                    //System.out.println("Laatste product gehad");
+                    lastProduct = true;
                     unloadProducts();
-                    //System.out.println("Klaar met lossen, dus helemaal klaar!");
                     doneUnloading();
-
-                    //Close connection
+                    lastProduct = false;
                 }
             }
         } catch (SerialPortException e) {
@@ -122,35 +115,35 @@ public class Controller {
     }
 
     private void unloadProducts() {
-        if (!unloadedProducts) {
-            try {
-                //Create message pane
-                final JOptionPane messagePane = new JOptionPane();
+        try {
+            //Create message pane
+            final JOptionPane messagePane = new JOptionPane();
 
-                //Bind the message bind to the dialog object
-                messageDialog = messagePane.createDialog("Lossen.. Even geduld..");
-                messageDialog.setModal(false);
+            //Bind the message bind to the dialog object
+            messageDialog = messagePane.createDialog("Lossen.. Even geduld..");
+            messageDialog.setModal(false);
 
-                //Set the dialog to visible
-                messageDialog.setVisible(true);
+            //Set the dialog to visible
+            messageDialog.setVisible(true);
 
-                //Send unload command
-                transporter.command("00");
+            //Send unload command
+            transporter.command("00");
 
-                while (transporter.getMessage() == null) {
-                    System.out.print("");
-                }
-
-                unloadToBin(totalProductCounter-1);
-                unloadToBin(totalProductCounter);
-
-                //If unloading done, close the message
-                messageDialog.dispose();
-
-                unloadedProducts = true;
-            } catch (Exception ex) {
-                System.out.println("Fout opgetreden");
+            while (transporter.getMessage() == null) {
+                System.out.print("");
             }
+            
+            if(lastProduct) {
+                unloadToBin(totalProductCounter);
+            } else {
+                unloadToBin(totalProductCounter - 1);
+                unloadToBin(totalProductCounter);
+            }
+
+            //If unloading done, close the message
+            messageDialog.dispose();
+        } catch (Exception ex) {
+            System.out.println("Fout opgetreden");
         }
     }
 
