@@ -57,13 +57,19 @@ public class StatusOrderwrapSection extends JPanel {
                 gr.fillRect(31, (293 + 77) - (310 / (20 / sizePreviousProduct) * amountsInBin), 157, -(310 / (20 / product.getGrootte())));
             }
         } else if (container == 2) {
-            //gr.fillRect(206, 293 - ((293 - 60) / (20 / sizePreviousProduct)), 157, 310 / (20 / product.getGrootte()));
             if (sizePreviousProduct > 1) {
                 gr.fillRect(206, (293 + 77) - (310 / (20 / sizePreviousProduct) * amountsInBin), 157, -(310 / (20 / product.getGrootte())));
             } else {
                 gr.fillRect(206, (293 + 77) - (310 / (20 / sizePreviousProduct) * amountsInBin), 157, -(310 / (20 / product.getGrootte())));
             }
         }
+    }
+
+    public void resetProducts() {
+        Graphics gr = this.getGraphics();
+
+        gr.clearRect(31, 60, 157, 310);
+        gr.clearRect(206, 60, 157, 310);
     }
 
     @Override

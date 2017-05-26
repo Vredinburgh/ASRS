@@ -60,11 +60,6 @@ public class Controller {
     }
 
     public void startOrderpicking() {
-        /*if (testp <= 5) {
-            unloadToBin(testp);
-            testp++;
-        }*/
-
         try {
             int path[] = tsp.shortestPath;
             int productCounter = 0;
@@ -76,9 +71,14 @@ public class Controller {
             for (int i = 0; i < path.length; i++) {
                 totalProductCounter++;
 
+                //Check if the bins are full
+                checkIfBinsFull();
+
                 String x = String.valueOf(tsp.products.get(path[i]).getX());
                 String y = String.valueOf(tsp.products.get(path[i]).getY());
                 String bin = String.valueOf(returnBinNumber(totalProductCounter));
+                
+                System.out.println("Dus in bin: "+bin);
 
                 transporter.command(x + y + bin);
 
@@ -104,8 +104,8 @@ public class Controller {
                 if (i == path.length - 1) {
                     lastProduct = true;
                     unloadProducts();
-                    //doneUnloading();
                     lastProduct = false;
+                    doneUnloading();
                 }
             }
         } catch (SerialPortException e) {
@@ -119,8 +119,6 @@ public class Controller {
 
     private void unloadProducts() {
         try {
-            //Check if the bins are full
-            checkIfBinsFull();
             //Create message pane
             final JOptionPane messagePane = new JOptionPane();
 
@@ -148,7 +146,7 @@ public class Controller {
             //If unloading done, close the message
             messageDialog.dispose();
         } catch (Exception ex) {
-            System.out.println("Fout opgetreden");
+            System.out.println("Fout opgetreden: " + ex);
         }
     }
 
@@ -186,8 +184,9 @@ public class Controller {
             //Bins full, ask to replace bins
             int dialogResult = JOptionPane.showConfirmDialog(null, "Dozen zijn vol, verwissel de dozen.", "Dozen vol", JOptionPane.YES_NO_OPTION);
             if (dialogResult == JOptionPane.YES_OPTION) {
-                bpp.bestFit.getContainers().remove(0);
-                bpp.bestFit.getContainers().remove(1);
+
+                bpp.bestFit.getContainers().get(0).setId(-1);
+                bpp.bestFit.getContainers().get(1).setId(-1);
                 bpp.bestFit.getContainers().get(2).setId(1);
 
                 amountProductsBin1 = 0;
@@ -197,7 +196,7 @@ public class Controller {
                 sizeProductsBin1 = 0;
                 sizeProductsBin2 = 0;
 
-                bppSection.repaint();
+                bppSection.resetProducts();
             }
         }
     }
