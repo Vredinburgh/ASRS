@@ -7,7 +7,8 @@ package ordersys;
 
 import java.util.ArrayList;
 import ordersys.gui.StatusOrderpickSection;
-import ordersys.tsp.AntColonyOptimization;
+import ordersys.tsp.TravelingSalesman;
+import ordersys.tsp.TravelingSalesmanBruteForce;
 import ordersys.xmlReader.Product;
 
 /**
@@ -17,11 +18,11 @@ import ordersys.xmlReader.Product;
 public class TSPHandler {
 
     private StatusOrderpickSection tspSection;
-    
+
     public ArrayList<Product> products;
-    
+
     public int[] shortestPath;
-    
+
     public boolean startTsp;
 
     public TSPHandler(StatusOrderpickSection tspSection, ArrayList<Product> products) {
@@ -32,7 +33,7 @@ public class TSPHandler {
 
     public void startTsp() {
         startTsp = true;
-        
+
         tspSection.repaint();
     }
 
@@ -48,9 +49,11 @@ public class TSPHandler {
         }
 
         //Create the algorithm object
-        AntColonyOptimization antColony = new AntColonyOptimization(x, y);
+        //Create the algorithm objects
+        TravelingSalesman salesman = new TravelingSalesman(x, y);
+        TravelingSalesmanBruteForce bruteForce = new TravelingSalesmanBruteForce(salesman);
 
         //Returns the shortest path calculated by the Antcolony algorithm
-        return antColony.solve();
+        return bruteForce.run();
     }
 }

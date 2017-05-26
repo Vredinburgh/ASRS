@@ -44,6 +44,9 @@ public class Controller {
 
     private int totalProductCounter = 0;
 
+    private int sizeProductsBin1 = 0;
+    private int sizeProductsBin2 = 0;
+
     private int amountProductsBin1 = 0;
     private int amountProductsBin2 = 0;
 
@@ -101,7 +104,7 @@ public class Controller {
                 if (i == path.length - 1) {
                     lastProduct = true;
                     unloadProducts();
-                    doneUnloading();
+                    //doneUnloading();
                     lastProduct = false;
                 }
             }
@@ -116,6 +119,8 @@ public class Controller {
 
     private void unloadProducts() {
         try {
+            //Check if the bins are full
+            checkIfBinsFull();
             //Create message pane
             final JOptionPane messagePane = new JOptionPane();
 
@@ -132,8 +137,8 @@ public class Controller {
             while (transporter.getMessage() == null) {
                 System.out.print("");
             }
-            
-            if(lastProduct) {
+
+            if (lastProduct) {
                 unloadToBin(totalProductCounter);
             } else {
                 unloadToBin(totalProductCounter - 1);
@@ -157,6 +162,7 @@ public class Controller {
                     if (product.getId() == productId) {
                         bppSection.updateContainer(product, sizePreviousProductBin1, c.getId(), amountProductsBin1);
                         sizePreviousProductBin1 = product.getGrootte();
+                        sizeProductsBin1 += product.getGrootte();
                         amountProductsBin1++;
                         break containerLoop;
                     }
@@ -166,26 +172,32 @@ public class Controller {
                     if (product.getId() == productId) {
                         bppSection.updateContainer(product, sizePreviousProductBin2, c.getId(), amountProductsBin2);
                         sizePreviousProductBin2 = product.getGrootte();
+                        sizeProductsBin2 += product.getGrootte();
                         amountProductsBin2++;
                         break containerLoop;
                     }
                 }
-            } else if (c.getId() > 2) {
-                //Bins full, ask to replace bins
-                int dialogResult = JOptionPane.showConfirmDialog(null, "Dozen zijn vol, verwissel de dozen.", "Dozen vol", JOptionPane.YES_NO_OPTION);
-                if (dialogResult == JOptionPane.YES_OPTION) {
-                    bpp.bestFit.getContainers().remove(0);
-                    bpp.bestFit.getContainers().remove(1);
-                    bpp.bestFit.getContainers().get(2).setId(1);
+            }
+        }
+    }
 
-                    amountProductsBin1 = 0;
-                    amountProductsBin2 = 0;
-                    sizePreviousProductBin1 = 1;
-                    sizePreviousProductBin2 = 1;
+    private void checkIfBinsFull() {
+        if (sizeProductsBin1 == 20 && sizeProductsBin2 == 20) {
+            //Bins full, ask to replace bins
+            int dialogResult = JOptionPane.showConfirmDialog(null, "Dozen zijn vol, verwissel de dozen.", "Dozen vol", JOptionPane.YES_NO_OPTION);
+            if (dialogResult == JOptionPane.YES_OPTION) {
+                bpp.bestFit.getContainers().remove(0);
+                bpp.bestFit.getContainers().remove(1);
+                bpp.bestFit.getContainers().get(2).setId(1);
 
-                    bppSection.repaint();
-                    unloadToBin(productId);
-                }
+                amountProductsBin1 = 0;
+                amountProductsBin2 = 0;
+                sizePreviousProductBin1 = 1;
+                sizePreviousProductBin2 = 1;
+                sizeProductsBin1 = 0;
+                sizeProductsBin2 = 0;
+
+                bppSection.repaint();
             }
         }
     }
