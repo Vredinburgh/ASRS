@@ -7,6 +7,7 @@ package ordersys;
 
 import java.awt.Desktop;
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import jssc.SerialPortException;
@@ -42,10 +43,15 @@ public class Controller {
     private JDialog messageDialog;
 
     private int totalProductCounter = 0;
+
     private int amountProductsBin1 = 0;
     private int amountProductsBin2 = 0;
+
     private int sizePreviousProductBin1 = 1;
     private int sizePreviousProductBin2 = 1;
+
+    private boolean unloadedProducts = false;
+    private boolean lastProduct = false;
 
     public Controller() {
         messageDialog = new JDialog();
@@ -72,8 +78,9 @@ public class Controller {
 
                 String x = String.valueOf(tsp.products.get(path[i]).getX());
                 String y = String.valueOf(tsp.products.get(path[i]).getY());
+                String bin = String.valueOf(returnBinNumber(totalProductCounter));
 
-                transporter.command(x + y);
+                transporter.command(x + y + bin);
 
                 while (transporter.getMessage() == null) {
                     System.out.print("");
@@ -85,10 +92,11 @@ public class Controller {
                 //Check if three products are loaded, if so return to unloading
                 //place.
                 if (productCounter > 0) {
-                    System.out.println("Lossen terug naar het lospunt");
+                    //System.out.println("Lossen terug naar het lospunt");
                     //Set loading text at the orderpick section
                     unloadProducts();
-                    System.out.println("Klaar met lossen");
+                    //System.out.println("Klaar met lossen");
+                    unloadedProducts = false;
                     productCounter = 0;
                 } else {
                     productCounter++;
@@ -96,9 +104,9 @@ public class Controller {
 
                 //If the loaded products is the last..
                 if (i == path.length - 1) {
-                    System.out.println("Laatste product gehad");
+                    //System.out.println("Laatste product gehad");
                     unloadProducts();
-                    System.out.println("Klaar met lossen, dus helemaal klaar!");
+                    //System.out.println("Klaar met lossen, dus helemaal klaar!");
                     doneUnloading();
 
                     //Close connection
@@ -114,25 +122,36 @@ public class Controller {
     }
 
     private void unloadProducts() {
-        //Create message pane
-        final JOptionPane messagePane = new JOptionPane();
+        if (!unloadedProducts) {
+            try {
+                //Create message pane
+                final JOptionPane messagePane = new JOptionPane();
 
-        //Bind the message bind to the dialog object
-        messageDialog = messagePane.createDialog("Lossen.. Even geduld..");
-        messageDialog.setModal(false);
+                //Bind the message bind to the dialog object
+                messageDialog = messagePane.createDialog("Lossen.. Even geduld..");
+                messageDialog.setModal(false);
 
-        //Set the dialog to visible
-        messageDialog.setVisible(true);
+                //Set the dialog to visible
+                messageDialog.setVisible(true);
 
-        //Send unload command
-        transporter.command("00");
+                //Send unload command
+                transporter.command("00");
 
-        while (transporter.getMessage() == null) {
-            System.out.print("");
+                while (transporter.getMessage() == null) {
+                    System.out.print("");
+                }
+
+                unloadToBin(totalProductCounter-1);
+                unloadToBin(totalProductCounter);
+
+                //If unloading done, close the message
+                messageDialog.dispose();
+
+                unloadedProducts = true;
+            } catch (Exception ex) {
+                System.out.println("Fout opgetreden");
+            }
         }
-
-        //If unloading done, close the message
-        messageDialog.dispose();
     }
 
     private void unloadToBin(int productId) {
@@ -170,12 +189,35 @@ public class Controller {
                     amountProductsBin2 = 0;
                     sizePreviousProductBin1 = 1;
                     sizePreviousProductBin2 = 1;
-                    
+
                     bppSection.repaint();
                     unloadToBin(productId);
                 }
             }
         }
+    }
+
+    private int returnBinNumber(int productId) {
+        int binNumber = 0;
+        containerLoop:
+        for (Container c : bpp.bestFit.getContainers()) {
+            if (c.getId() == 1) {
+                for (ProductBPP product : c.getProducten()) {
+                    if (product.getId() == productId) {
+                        binNumber = 1;
+                        break containerLoop;
+                    }
+                }
+            } else if (c.getId() == 2) {
+                for (ProductBPP product : c.getProducten()) {
+                    if (product.getId() == productId) {
+                        binNumber = 2;
+                        break containerLoop;
+                    }
+                }
+            }
+        }
+        return binNumber;
     }
 
     private void doneUnloading() {

@@ -72,6 +72,10 @@ public class Controller implements SerialPortEventListener {
         ob.close();
     }
     
+    public void setMessage() {
+        message = null;
+    }
+    
     public String getMessage() {
         return message;
     }
@@ -104,7 +108,7 @@ public class Controller implements SerialPortEventListener {
                 String receivedData = serialPort.readString(event.getEventValue());
                 //System.out.println("Received response from port: " + receivedData);
                 message = receivedData;
-                Thread.sleep(150);
+                Thread.sleep(50);
                 message = null;
             }
             catch (SerialPortException ex) {
