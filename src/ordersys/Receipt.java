@@ -16,7 +16,13 @@ import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfWriter;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import ordersys.bpp.BestFit;
+import ordersys.bpp.ProductBPP;
 import ordersys.xmlReader.Product;
 
 /**
@@ -25,14 +31,30 @@ import ordersys.xmlReader.Product;
  */
 public class Receipt {
 
+    private BestFit containers;
     private ArrayList<Product> products;
 
     private BaseFont bfBold;
     private BaseFont bf;
     private int pageNumber = 0;
+    
+    private int year = 0;
+    private int month = 0;
+    private int day = 0;
+    
+    private String customerName;
 
-    public Receipt(ArrayList<Product> products) {
+    public Receipt(BestFit containers, ArrayList<Product> products, String customerName) {
+        this.containers = containers;
         this.products = products;
+        this.customerName = customerName;
+
+        Date date = new Date();
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        year = localDate.getYear();
+        month = localDate.getMonthValue();
+        day = localDate.getDayOfMonth();
     }
 
     public void createPDF(String pdfFilename) {
@@ -56,7 +78,7 @@ public class Receipt {
             boolean beginPage = true;
             int y = 0;
 
-            for (int i = 0; i < products.size(); i++) {
+            /*for (int i = 0; i < containers.getContainers().size(); i++) {
                 if (beginPage) {
                     beginPage = false;
                     generateLayout(doc, cb);
@@ -70,8 +92,19 @@ public class Receipt {
                     doc.newPage();
                     beginPage = true;
                 }
+                System.out.println("Container: "+i);
+            }*/
+            for (int i = 0; i < containers.getContainers().size(); i++) {
+                y = 615;
+
+                doc.newPage();
+                generateLayout(doc, cb);
+                generateHeader(doc, cb, i+1, customerName);
+
+                generateDetail(doc, cb, i, y);
+                
+                printPageNumber(cb);
             }
-            printPageNumber(cb);
 
         } catch (DocumentException dex) {
             dex.printStackTrace();
@@ -105,7 +138,7 @@ public class Receipt {
 
             // Invoice Header box Text Headings 
             createHeadings(cb, 422, 743, "Klant naam");
-            createHeadings(cb, 422, 723, "Pakbon Nr.");
+            createHeadings(cb, 422, 723, "Doos Nr.");
             createHeadings(cb, 422, 703, "Pakbon Datum");
 
             // Invoice Detail box layout 
@@ -143,7 +176,7 @@ public class Receipt {
 
     }
 
-    private void generateHeader(Document doc, PdfContentByte cb) {
+    private void generateHeader(Document doc, PdfContentByte cb, int containerId, String name) {
 
         try {
 
@@ -152,9 +185,9 @@ public class Receipt {
             createHeadings(cb, 200, 720, "Zwolle");
             createHeadings(cb, 200, 705, "Nederland");
 
-            createHeadings(cb, 482, 743, "1234");
-            createHeadings(cb, 482, 723, "23");
-            createHeadings(cb, 482, 703, "17-05-2017");
+            createHeadings(cb, 482, 743, name);
+            createHeadings(cb, 482, 723, String.valueOf(containerId));
+            createHeadings(cb, 482, 703, String.valueOf(day) + "-" + String.valueOf(month) + "-" + String.valueOf(year));
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -166,12 +199,20 @@ public class Receipt {
         DecimalFormat df = new DecimalFormat("0.00");
 
         try {
-            createContent(cb, 48, y, String.valueOf(1), PdfContentByte.ALIGN_RIGHT);
-            createContent(cb, 52, y, String.valueOf(products.get(index).getProductNr()), PdfContentByte.ALIGN_LEFT);
-            createContent(cb, 152, y, products.get(index).getName(), PdfContentByte.ALIGN_LEFT);
+            for (ProductBPP product : containers.getContainers().get(index).getProducten()) {
+                for (Product p : products) {
+                    if (product.getId() == p.getProductNr()) {
+                        createContent(cb, 48, y, String.valueOf(1), PdfContentByte.ALIGN_RIGHT);
+                        createContent(cb, 52, y, String.valueOf(p.getProductNr()), PdfContentByte.ALIGN_LEFT);
+                        createContent(cb, 152, y, p.getName(), PdfContentByte.ALIGN_LEFT);
 
-            createContent(cb, 498, y, String.valueOf(df.format(products.get(index).getPrice())), PdfContentByte.ALIGN_RIGHT);
-            createContent(cb, 568, y, String.valueOf(df.format(products.get(index).getPrice() * 0.79)), PdfContentByte.ALIGN_RIGHT);
+                        createContent(cb, 498, y, String.valueOf(df.format(p.getPrice())), PdfContentByte.ALIGN_RIGHT);
+                        createContent(cb, 568, y, String.valueOf(df.format(p.getPrice() * 0.79)), PdfContentByte.ALIGN_RIGHT);
+
+                        y -= 15;
+                    }
+                }
+            }
 
         } catch (Exception ex) {
             ex.printStackTrace();

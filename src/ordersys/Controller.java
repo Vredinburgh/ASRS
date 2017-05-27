@@ -73,31 +73,25 @@ public class Controller {
             for (int i = 0; i < path.length; i++) {
                 totalProductCounter++;
 
-                //Check if the bins are full
-                checkIfBinsFull();
-
                 String x = String.valueOf(tsp.products.get(path[i]).getX());
                 String y = String.valueOf(tsp.products.get(path[i]).getY());
                 String bin = String.valueOf(returnBinNumber(totalProductCounter));
 
-                transporter.command(x + y + bin);
+                /*transporter.command(x + y + bin);
 
                 while (transporter.getMessage() == null) {
                     System.out.print("");
-                }
-
+                }*/
+                
                 //Update the product, set red
                 tspSection.updateProduct(tsp.products.get(path[i]));
 
                 //If the loaded products is the last..
                 if (i == path.length - 1) {
                     if ((path.length % 2) == 0) {
-                        System.out.println("deze niet");
-                        System.out.println(path.length);
                         unloadProducts();
                         doneUnloading();
                     } else {
-                        System.out.println("deze wel");
                         lastProduct = true;
                         unloadProducts();
                         lastProduct = false;
@@ -124,6 +118,9 @@ public class Controller {
 
     private void unloadProducts() {
         try {
+            //Check if the bins are full
+            checkIfBinsFull();
+
             //Create message pane
             final JOptionPane messagePane = new JOptionPane();
 
@@ -135,11 +132,11 @@ public class Controller {
             messageDialog.setVisible(true);
 
             //Send unload command
-            transporter.command("00");
+            /*transporter.command("00");
 
             while (transporter.getMessage() == null) {
                 System.out.print("");
-            }
+            }*/
 
             if (lastProduct) {
                 unloadToBin(totalProductCounter);
@@ -187,7 +184,9 @@ public class Controller {
     private void checkIfBinsFull() {
         if (sizeProductsBin1 == 20 && sizeProductsBin2 == 20) {
             //Bins full, ask to replace bins
-            int dialogResult = JOptionPane.showConfirmDialog(null, "Dozen zijn vol, verwissel de dozen.", "Dozen vol", JOptionPane.INFORMATION_MESSAGE);
+            boolean drawBin2 = false;
+            
+            int dialogResult = JOptionPane.showConfirmDialog(null, "Dozen zijn vol, verwissel de dozen.", "Dozen vol", JOptionPane.DEFAULT_OPTION);
             if (dialogResult == JOptionPane.YES_OPTION) {
 
                 for (int i = 0; i < 2 * timesBinsFull; i++) {
@@ -197,6 +196,7 @@ public class Controller {
                 bpp.bestFit.getContainers().get((timesBinsFull * 2)).setId(1);
                 try {
                     bpp.bestFit.getContainers().get((timesBinsFull * 2) + 1).setId(2);
+                    drawBin2 = true;
                 } catch (Exception ex) {
                     System.out.println("Geen 2e doos nodig");
                 }
@@ -208,7 +208,7 @@ public class Controller {
                 sizeProductsBin1 = 0;
                 sizeProductsBin2 = 0;
 
-                bppSection.resetProducts((timesBinsFull * 2) + 1, (timesBinsFull * 2) + 2);
+                bppSection.resetProducts((timesBinsFull * 2) + 1, (timesBinsFull * 2) + 2, drawBin2);
             }
             timesBinsFull++;
         }
@@ -243,7 +243,9 @@ public class Controller {
         if (dialogResult == JOptionPane.YES_OPTION) {
             //Generate the receipt
             String receiptName = "receipt.pdf";
-            Receipt receipt = new Receipt(getInvoiceData().getOrder().getProducts());
+            String customerName = getInvoiceData().getCustomer().getFirstName() + " " + getInvoiceData().getCustomer().getLastName();
+            
+            Receipt receipt = new Receipt(bpp.bestFit, getInvoiceData().getOrder().getProducts(), customerName);
             receipt.createPDF(receiptName);
 
             //Open the receipt

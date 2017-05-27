@@ -65,15 +65,19 @@ public class StatusOrderwrapSection extends JPanel {
         }
     }
 
-    public void resetProducts(int bin1, int bin2) {
+    public void resetProducts(int bin1, int bin2, boolean drawBin2) {
         Graphics gr = this.getGraphics();
 
         gr.clearRect(30, 40, 300, 10);
         gr.clearRect(31, 60, 157, 310);
-        gr.clearRect(206, 60, 157, 310);
 
-        gr.drawString("Doos "+bin1, 30, 50);
-        gr.drawString("Doos "+bin2, 205, 50);
+        gr.drawString("Doos " + bin1, 30, 50);
+        if (drawBin2) {
+            gr.drawString("Doos " + bin2, 205, 50);
+            gr.clearRect(206, 60, 157, 310);
+        } else {
+            gr.clearRect(205, 60, 160, 312);
+        }
     }
 
     @Override
