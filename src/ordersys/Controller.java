@@ -44,6 +44,8 @@ public class Controller {
 
     private int totalProductCounter = 0;
 
+    private int timesBinsFull = 1;
+
     private int sizeProductsBin1 = 0;
     private int sizeProductsBin2 = 0;
 
@@ -77,8 +79,6 @@ public class Controller {
                 String x = String.valueOf(tsp.products.get(path[i]).getX());
                 String y = String.valueOf(tsp.products.get(path[i]).getY());
                 String bin = String.valueOf(returnBinNumber(totalProductCounter));
-                
-                System.out.println("Dus in bin: "+bin);
 
                 transporter.command(x + y + bin);
 
@@ -89,23 +89,28 @@ public class Controller {
                 //Update the product, set red
                 tspSection.updateProduct(tsp.products.get(path[i]));
 
-                //Check if three products are loaded, if so return to unloading
-                //place.
-                if (productCounter > 0) {
+                //If the loaded products is the last..
+                if (i == path.length - 1) {
+                    if ((path.length % 2) == 0) {
+                        System.out.println("deze niet");
+                        System.out.println(path.length);
+                        unloadProducts();
+                        doneUnloading();
+                    } else {
+                        System.out.println("deze wel");
+                        lastProduct = true;
+                        unloadProducts();
+                        lastProduct = false;
+                        doneUnloading();
+                    }
+                    productCounter = 0;
+                } else if (productCounter > 0) {
                     //System.out.println("Lossen terug naar het lospunt");
                     //Set loading text at the orderpick section
                     unloadProducts();
                     productCounter = 0;
                 } else {
                     productCounter++;
-                }
-
-                //If the loaded products is the last..
-                if (i == path.length - 1) {
-                    lastProduct = true;
-                    unloadProducts();
-                    lastProduct = false;
-                    doneUnloading();
                 }
             }
         } catch (SerialPortException e) {
@@ -182,12 +187,19 @@ public class Controller {
     private void checkIfBinsFull() {
         if (sizeProductsBin1 == 20 && sizeProductsBin2 == 20) {
             //Bins full, ask to replace bins
-            int dialogResult = JOptionPane.showConfirmDialog(null, "Dozen zijn vol, verwissel de dozen.", "Dozen vol", JOptionPane.YES_NO_OPTION);
+            int dialogResult = JOptionPane.showConfirmDialog(null, "Dozen zijn vol, verwissel de dozen.", "Dozen vol", JOptionPane.INFORMATION_MESSAGE);
             if (dialogResult == JOptionPane.YES_OPTION) {
 
-                bpp.bestFit.getContainers().get(0).setId(-1);
-                bpp.bestFit.getContainers().get(1).setId(-1);
-                bpp.bestFit.getContainers().get(2).setId(1);
+                for (int i = 0; i < 2 * timesBinsFull; i++) {
+                    bpp.bestFit.getContainers().get(i).setId(-1);
+                }
+
+                bpp.bestFit.getContainers().get((timesBinsFull * 2)).setId(1);
+                try {
+                    bpp.bestFit.getContainers().get((timesBinsFull * 2) + 1).setId(2);
+                } catch (Exception ex) {
+                    System.out.println("Geen 2e doos nodig");
+                }
 
                 amountProductsBin1 = 0;
                 amountProductsBin2 = 0;
@@ -196,8 +208,9 @@ public class Controller {
                 sizeProductsBin1 = 0;
                 sizeProductsBin2 = 0;
 
-                bppSection.resetProducts();
+                bppSection.resetProducts((timesBinsFull * 2) + 1, (timesBinsFull * 2) + 2);
             }
+            timesBinsFull++;
         }
     }
 
@@ -226,7 +239,7 @@ public class Controller {
 
     private void doneUnloading() {
         //Done unloading, ask the user if he wants to generate a receipt
-        int dialogResult = JOptionPane.showConfirmDialog(null, "Klaar. Wilt u de pakbon openen?", "Pakbon", JOptionPane.YES_NO_OPTION);
+        int dialogResult = JOptionPane.showConfirmDialog(null, "Klaar. Wilt u de pakbon openen?", "Pakbon", JOptionPane.INFORMATION_MESSAGE);
         if (dialogResult == JOptionPane.YES_OPTION) {
             //Generate the receipt
             String receiptName = "receipt.pdf";
