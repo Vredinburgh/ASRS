@@ -19,7 +19,6 @@ import com.itextpdf.text.pdf.PdfWriter;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import ordersys.bpp.BestFit;
 import ordersys.bpp.ProductBPP;
@@ -64,7 +63,7 @@ public class Receipt {
         initializeFonts();
 
         try {
-            String path = "C:/Users/gerri/Desktop/" + pdfFilename;
+            String path = pdfFilename;
             docWriter = PdfWriter.getInstance(doc, new FileOutputStream(path));
             doc.addAuthor("Roboboyz");
             doc.addCreationDate();

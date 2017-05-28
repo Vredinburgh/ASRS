@@ -38,18 +38,24 @@ public class StatusOrderwrapSection extends JPanel {
         this.bpp = bpp;
     }
 
+    //Fucntion to add a product to a bin
     public void updateContainer(ProductBPP product, int sizePreviousProduct, int container, int amountsInBin) {
+        //Get the graphic component and generate a new random
         Graphics gr = this.getGraphics();
         Random rand = new Random();
 
+        //Get random RGB variables
         float r = rand.nextFloat();
         float g = rand.nextFloat();
         float b = rand.nextFloat();
 
+        //Get a random color
         Color randomColor = new Color(r, g, b);
 
+        //Set the random color to the graphics component
         gr.setColor(randomColor);
 
+        //Check to which container the product must be added
         if (container == 1) {
             if (sizePreviousProduct > 1) {
                 gr.fillRect(31, (293 + 77) - (310 / (20 / sizePreviousProduct) * amountsInBin), 157, -(310 / (20 / product.getGrootte())));
@@ -65,6 +71,7 @@ public class StatusOrderwrapSection extends JPanel {
         }
     }
 
+    //Function to add new bins
     public void resetProducts(int bin1, int bin2, boolean drawBin2) {
         Graphics gr = this.getGraphics();
 

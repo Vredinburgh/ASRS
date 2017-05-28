@@ -58,30 +58,38 @@ public class Controller {
     private boolean lastProduct = false;
 
     public Controller() {
+        //Initiate the message dialog
         messageDialog = new JDialog();
     }
 
     public void startOrderpicking() {
         try {
+            //Load the shortest path and set the productCounter to 0
             int path[] = tsp.shortestPath;
             int productCounter = 0;
 
+            //Get the COM port for the Arduino
             String transporterPort = PortFinder.portNames[0];
 
+            //Initiate the transporter with the COM port
             transporter = new Transporter(transporterPort);
 
+            //Execute foreach product
             for (int i = 0; i < path.length; i++) {
                 totalProductCounter++;
 
                 //Check if the bins are full
                 checkIfBinsFull();
 
+                //Get the x, y and bin variables of the product
                 String x = String.valueOf(tsp.products.get(path[i]).getX());
                 String y = String.valueOf(tsp.products.get(path[i]).getY());
                 String bin = String.valueOf(returnBinNumber(totalProductCounter));
 
+                //Send the execute command to the transporter
                 transporter.command(x + y + bin);
 
+                //While message is null
                 while (transporter.getMessage() == null) {
                     System.out.print("");
                 }
@@ -89,24 +97,37 @@ public class Controller {
                 //Update the product, set red
                 tspSection.updateProduct(tsp.products.get(path[i]));
 
-                //If the loaded products is the last..
+                //If the loaded products is the last
                 if (i == path.length - 1) {
+                    //Check if one or two products are loaded
                     if ((path.length % 2) == 0) {
+                        //Unload the products
                         unloadProducts();
+                        
+                        //Done unloading, show receipt
                         doneUnloading();
                     } else {
+                        //Set lastproduct to true
                         lastProduct = true;
+                        
+                        //Unload the products
                         unloadProducts();
+                        
+                        //Set lastproduct to false
                         lastProduct = false;
+                        
+                        //Done unloading, show receipt
                         doneUnloading();
                     }
                     productCounter = 0;
                 } else if (productCounter > 0) {
-                    //System.out.println("Lossen terug naar het lospunt");
-                    //Set loading text at the orderpick section
+                    //Unload products if two products are loaded
                     unloadProducts();
+                    
+                    //Set productcounter to zero
                     productCounter = 0;
                 } else {
+                    //If a product is loaded, +1 to productcounter
                     productCounter++;
                 }
             }
@@ -134,10 +155,13 @@ public class Controller {
             //Send unload command
             transporter.command("00");
 
+            //While message is nuull
             while (transporter.getMessage() == null) {
                 System.out.print("");
             }
 
+            //If the product is the last product, add one item to the bin
+            //otherwise add two items to the bin
             if (lastProduct) {
                 unloadToBin(totalProductCounter);
             } else {
@@ -181,9 +205,10 @@ public class Controller {
         }
     }
 
+    //Function to check if the bins are full, if a bin is full replace it with
+    //a new one.
     private void checkIfBinsFull() {
         if (sizeProductsBin1 == 20 && sizeProductsBin2 == 20) {
-            //Bins full, ask to replace bins
             boolean drawBin2 = false;
 
             int dialogResult = JOptionPane.showConfirmDialog(null, "Dozen zijn vol, verwissel de dozen.", "Dozen vol", JOptionPane.DEFAULT_OPTION);
@@ -214,6 +239,7 @@ public class Controller {
         }
     }
 
+    //Function to return the bin number of a specified product
     private int returnBinNumber(int productId) {
         int binNumber = 0;
         containerLoop:
@@ -236,7 +262,8 @@ public class Controller {
         }
         return binNumber;
     }
-
+    
+    //Function to show an unloading screen and to generate a receipt
     private void doneUnloading() {
         //Done unloading, ask the user if he wants to generate a receipt
         int dialogResult = JOptionPane.showConfirmDialog(null, "Klaar. Wilt u de pakbon openen?", "Pakbon", JOptionPane.INFORMATION_MESSAGE);
@@ -251,7 +278,7 @@ public class Controller {
             //Open the receipt
             try {
                 Desktop desktop = Desktop.getDesktop();
-                File receiptFile = new File("C:/Users/gerri/Desktop/" + receiptName);
+                File receiptFile = new File(receiptName);
                 desktop.open(receiptFile);
             } catch (Exception ex) {
                 System.out.println("Kan de pakbon helaas niet openen");

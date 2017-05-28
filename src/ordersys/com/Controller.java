@@ -11,16 +11,15 @@ public class Controller implements SerialPortEventListener {
 
     private Scanner ob;
     private SerialPort serialPort;
-    private InstructionsGenerator instructionsGenerator;
     
     private String message;
 
     public Controller(String portDescription) throws SerialPortException {
-        instructionsGenerator = new InstructionsGenerator();
         serialPort = new SerialPort(portDescription);
         openConnection();
     }
 
+    //Function to open the connection with a COM port
     public void openConnection()  {
         try {
             serialPort.openPort();
@@ -36,6 +35,7 @@ public class Controller implements SerialPortEventListener {
         System.out.println("new connection");
     }
 
+    //Function to close the connection with a COM port
     public void closeConnection() {
         try {
             serialPort.closePort();
@@ -44,6 +44,7 @@ public class Controller implements SerialPortEventListener {
         }
     }
 
+    //Function to send a command to the COM port
     public void sendCommand(String input) {
         try {
             Thread.sleep(1000);
@@ -80,33 +81,12 @@ public class Controller implements SerialPortEventListener {
         return message;
     }
 
-    public void sendRoute(int[][] route) {
-        instructionsGenerator.newInstructions(route);
-    }
-
-//    public String getState() throws NullPointerException {
-//        String state = null;
-//        try {
-//            serialPort.writeString("state");
-//            Thread.sleep(2000);
-//            state = serialPort.readString();
-//        } catch (SerialPortException e) {
-//            e.printStackTrace();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } finally {
-//            System.out.println("command");
-//
-//        }
-//        return state;
-//    }
-
+    //Function to receive data from the COM port
     @Override
     public void serialEvent(SerialPortEvent event) {
         if(event.isRXCHAR() && event.getEventValue() > 0) {
             try {
                 String receivedData = serialPort.readString(event.getEventValue());
-                //System.out.println("Received response from port: " + receivedData);
                 message = receivedData;
                 Thread.sleep(50);
                 message = null;

@@ -36,6 +36,7 @@ public class CustomerSection extends JPanel {
         
         this.controller = controller;
         
+        //Initiate all the labels
         labelFirstname = new JLabel("Voornaam: -");
         labelFirstname.setBorder(BorderFactory.createEmptyBorder(35, 10, 0, 0));
         labelLastname = new JLabel("Achternaam: -");
@@ -47,6 +48,7 @@ public class CustomerSection extends JPanel {
         labelCity = new JLabel("Plaats: -");
         labelCity.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 0));
         
+        //Add all the labels to the panel
         add(labelFirstname);
         add(labelLastname);
         add(labelAddress);
@@ -56,6 +58,7 @@ public class CustomerSection extends JPanel {
         setVisible(true);
     }
     
+    //Function to update the customer information
     public void updateInformation(Invoice invoice) {
         labelFirstname.setText("Voornaam: " + invoice.getCustomer().getFirstName());
         labelLastname.setText("Achternaam: " + invoice.getCustomer().getLastName());

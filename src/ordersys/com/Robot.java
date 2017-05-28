@@ -22,10 +22,6 @@ public class Robot {
     public void testCommand() {
         controller.startTestCommand();
     }
-
-    public void sendRoute(int[][] route) {
-        controller.sendRoute(route);
-    }
     
     public String getMessage() {
         return controller.getMessage();

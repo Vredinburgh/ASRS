@@ -49,7 +49,6 @@ public class TSPHandler {
         }
 
         //Create the algorithm object
-        //Create the algorithm objects
         TravelingSalesman salesman = new TravelingSalesman(x, y);
         TravelingSalesmanBruteForce bruteForce = new TravelingSalesmanBruteForce(salesman);
 
