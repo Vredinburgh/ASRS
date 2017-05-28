@@ -73,16 +73,19 @@ public class Controller {
             for (int i = 0; i < path.length; i++) {
                 totalProductCounter++;
 
+                //Check if the bins are full
+                checkIfBinsFull();
+
                 String x = String.valueOf(tsp.products.get(path[i]).getX());
                 String y = String.valueOf(tsp.products.get(path[i]).getY());
                 String bin = String.valueOf(returnBinNumber(totalProductCounter));
 
-                /*transporter.command(x + y + bin);
+                transporter.command(x + y + bin);
 
                 while (transporter.getMessage() == null) {
                     System.out.print("");
-                }*/
-                
+                }
+
                 //Update the product, set red
                 tspSection.updateProduct(tsp.products.get(path[i]));
 
@@ -118,9 +121,6 @@ public class Controller {
 
     private void unloadProducts() {
         try {
-            //Check if the bins are full
-            checkIfBinsFull();
-
             //Create message pane
             final JOptionPane messagePane = new JOptionPane();
 
@@ -132,11 +132,11 @@ public class Controller {
             messageDialog.setVisible(true);
 
             //Send unload command
-            /*transporter.command("00");
+            transporter.command("00");
 
             while (transporter.getMessage() == null) {
                 System.out.print("");
-            }*/
+            }
 
             if (lastProduct) {
                 unloadToBin(totalProductCounter);
@@ -185,7 +185,7 @@ public class Controller {
         if (sizeProductsBin1 == 20 && sizeProductsBin2 == 20) {
             //Bins full, ask to replace bins
             boolean drawBin2 = false;
-            
+
             int dialogResult = JOptionPane.showConfirmDialog(null, "Dozen zijn vol, verwissel de dozen.", "Dozen vol", JOptionPane.DEFAULT_OPTION);
             if (dialogResult == JOptionPane.YES_OPTION) {
 
@@ -244,7 +244,7 @@ public class Controller {
             //Generate the receipt
             String receiptName = "receipt.pdf";
             String customerName = getInvoiceData().getCustomer().getFirstName() + " " + getInvoiceData().getCustomer().getLastName();
-            
+
             Receipt receipt = new Receipt(bpp.bestFit, getInvoiceData().getOrder().getProducts(), customerName);
             receipt.createPDF(receiptName);
 
